@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { journeyMilestones } from '../../data/journeyData';
 import { usePerspective } from '../../context/PerspectiveContext';
-import { Sparkles, Compass, CheckCircle2, ArrowRight, Lightbulb, Rocket, Milestone } from 'lucide-react';
+import { Sparkles, Milestone, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export const JourneySection: React.FC = () => {
   const { isDesigner } = usePerspective();
@@ -11,31 +11,33 @@ export const JourneySection: React.FC = () => {
     journeyMilestones.find((m) => m.year === selectedYear) || journeyMilestones[journeyMilestones.length - 1];
 
   return (
-    <section id="journey" className="relative py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+    <section id="journey" className="relative py-28 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto space-y-12">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel border border-white/10 text-xs font-mono">
-          <Milestone className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-400">03. BUILDER EVOLUTION</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-[#9a9a9a]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#ffb829] shadow-[0_0_6px_#ffb829] animate-pulse" />
+          <span>03. BUILDER EVOLUTION</span>
+          <span>•</span>
+          <span className="text-[#bdbdbd]">CHRONOLOGICAL MATRIX</span>
         </div>
 
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-0.035em] leading-[1.08]">
           My Journey Through Cyberspace
         </h2>
 
-        <p className="text-slate-400 max-w-2xl text-base sm:text-lg leading-relaxed">
-          Not a static resume timeline. This is my <span className="text-white font-medium">evolution as a builder</span>—how
-          foundations in code and design catalyzed into autonomous intelligent systems.
+        <p className="text-[#bdbdbd] font-extralight text-lg sm:text-xl leading-[1.65] max-w-2xl">
+          Not a static resume timeline. This is my <span className="font-normal text-white">evolution as a builder</span>—how
+          foundations in design and engineering catalyzed into autonomous, human-centered intelligent systems.
         </p>
       </div>
 
       {/* COSMIC ORBITAL TIMELINE TRACK */}
-      <div className="relative py-8">
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/10 bg-space-950/80 shadow-2xl overflow-x-auto">
+      <div className="relative py-6">
+        <div className="rounded-3xl p-6 sm:p-8 border border-white/10 bg-white/[0.02] backdrop-blur-xl shadow-2xl overflow-x-auto">
           {/* Orbital timeline axis */}
           <div className="relative flex items-center justify-between min-w-[760px] px-4">
             {/* Background connecting beam */}
-            <div className="absolute top-5 left-8 right-8 h-1 bg-gradient-to-r from-violet-600/30 via-cyan-500/30 to-emerald-500/30 -z-0 rounded-full" />
+            <div className="absolute top-5 left-8 right-8 h-1 bg-gradient-to-r from-[#8052ff]/30 via-[#15846e]/30 to-[#ffb829]/30 -z-0 rounded-full" />
 
             {journeyMilestones.map((m) => {
               const isSelected = m.year === selectedYear;
@@ -50,9 +52,9 @@ export const JourneySection: React.FC = () => {
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-xs transition-all duration-300 border ${
                       isSelected
                         ? isDesigner
-                          ? 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white border-violet-400 shadow-glow-designer scale-125'
-                          : 'bg-gradient-to-br from-emerald-600 to-teal-600 text-white border-emerald-400 shadow-glow-engineer scale-125'
-                        : 'bg-space-900 text-slate-400 border-white/15 hover:border-white/40 hover:text-white'
+                          ? 'bg-[#8052ff] text-white border-[#8052ff] shadow-lg shadow-[#8052ff]/40 scale-125'
+                          : 'bg-[#15846e] text-white border-[#15846e] shadow-lg shadow-[#15846e]/40 scale-125'
+                        : 'bg-black text-[#9a9a9a] border-white/15 hover:border-white/40 hover:text-white'
                     }`}
                   >
                     {m.year === '2026' ? 'NOW' : m.year}
@@ -61,8 +63,8 @@ export const JourneySection: React.FC = () => {
                   {/* Year & Theme Sub-labels */}
                   <div className="mt-3 text-center">
                     <span
-                      className={`text-xs font-mono font-bold block transition-colors ${
-                        isSelected ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'
+                      className={`text-xs font-mono font-medium block transition-colors ${
+                        isSelected ? 'text-white' : 'text-[#9a9a9a] group-hover:text-white'
                       }`}
                     >
                       {m.year}
@@ -70,8 +72,8 @@ export const JourneySection: React.FC = () => {
                     <span
                       className={`text-[11px] font-mono tracking-wider uppercase block mt-0.5 ${
                         isSelected
-                          ? isDesigner ? 'text-violet-300' : 'text-emerald-300'
-                          : 'text-slate-500'
+                          ? isDesigner ? 'text-[#8052ff]' : 'text-[#15846e]'
+                          : 'text-[#9a9a9a]'
                       }`}
                     >
                       {m.theme}
@@ -85,11 +87,11 @@ export const JourneySection: React.FC = () => {
       </div>
 
       {/* EXPANDED YEAR CARD */}
-      <div className="rounded-3xl glass-panel border border-white/15 p-6 sm:p-10 bg-space-950/90 shadow-2xl relative overflow-hidden animate-fadeIn">
+      <div className="rounded-3xl border border-white/10 p-6 sm:p-10 bg-white/[0.02] backdrop-blur-xl shadow-2xl relative overflow-hidden animate-fadeIn">
         {/* Ambient background accent aura */}
         <div
-          className={`absolute -top-32 -right-32 w-80 h-80 rounded-full filter blur-[120px] opacity-25 pointer-events-none ${
-            isDesigner ? 'bg-violet-600' : 'bg-emerald-600'
+          className={`absolute -top-32 -right-32 w-80 h-80 rounded-full filter blur-[120px] opacity-20 pointer-events-none ${
+            isDesigner ? 'bg-[#8052ff]' : 'bg-[#15846e]'
           }`}
         />
 
@@ -101,39 +103,37 @@ export const JourneySection: React.FC = () => {
                 <span
                   className={`px-3 py-1 rounded-full border ${
                     isDesigner
-                      ? 'bg-violet-500/20 text-violet-300 border-violet-500/30'
-                      : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                      ? 'bg-[#8052ff]/15 text-[#8052ff] border-[#8052ff]/30'
+                      : 'bg-[#15846e]/15 text-[#15846e] border-[#15846e]/30'
                   }`}
                 >
                   CHAPTER: {activeMilestone.year} • {activeMilestone.theme.toUpperCase()}
                 </span>
                 {activeMilestone.stats && (
-                  <span className="text-slate-400">{activeMilestone.stats}</span>
+                  <span className="text-[#9a9a9a]">{activeMilestone.stats}</span>
                 )}
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-normal text-white mt-2 tracking-tight">
                 {activeMilestone.title}
               </h3>
             </div>
-
-            <div className="p-3.5 rounded-xl bg-space-900/80 border border-white/10 text-xs font-mono text-slate-300 shrink-0">
-              <span className="text-slate-400 block text-[10px]">KEY ARTIFACT:</span>
-              <span className="font-bold text-white mt-0.5 block">{activeMilestone.keyArtifact}</span>
+            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 text-xs font-mono text-[#bdbdbd] shrink-0">
+              <span className="text-[#9a9a9a] block text-[10px]">KEY ARTIFACT:</span>
+              <span className="font-medium text-white mt-0.5 block">{activeMilestone.keyArtifact}</span>
             </div>
           </div>
 
           {/* Tri-Column Deep Dive: What I Learned, What I Built, What Changed */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* What I learned */}
-            <div className="p-6 rounded-2xl bg-space-900/70 border border-white/10 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold">
-                <Lightbulb className="w-4 h-4" />
-                <span>WHAT I LEARNED</span>
-              </div>
-              <ul className="space-y-2 text-xs text-slate-300 leading-relaxed">
-                {activeMilestone.learned.map((item, idx) => (
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+              <span className="text-xs font-mono text-[#ffb829] font-medium block">
+                WHAT I MASTERED & DISCOVERED
+              </span>
+              <ul className="space-y-2 text-xs text-[#bdbdbd] font-extralight leading-relaxed">
+                {(activeMilestone.learned ?? []).map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <span className="text-cyan-400 mt-1">•</span>
+                    <span className="text-[#ffb829] mt-0.5">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -141,15 +141,14 @@ export const JourneySection: React.FC = () => {
             </div>
 
             {/* What I built */}
-            <div className="p-6 rounded-2xl bg-space-900/70 border border-white/10 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-mono text-violet-400 font-bold">
-                <Rocket className="w-4 h-4" />
-                <span>WHAT I BUILT</span>
-              </div>
-              <ul className="space-y-2 text-xs text-slate-300 leading-relaxed">
-                {activeMilestone.built.map((item, idx) => (
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+              <span className="text-xs font-mono text-[#8052ff] font-medium block">
+                WHAT I SHIPPED & ARCHITECTED
+              </span>
+              <ul className="space-y-2 text-xs text-[#bdbdbd] font-extralight leading-relaxed">
+                {(activeMilestone.built ?? []).map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <span className="text-violet-400 mt-1">✓</span>
+                    <span className="text-[#8052ff] mt-0.5">✓</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -157,20 +156,19 @@ export const JourneySection: React.FC = () => {
             </div>
 
             {/* What changed */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-space-900 to-space-850 border border-white/15 space-y-3 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3 flex flex-col justify-between">
               <div>
-                <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-bold">
-                  <Sparkles className="w-4 h-4" />
-                  <span>THE MENTAL SHIFT</span>
-                </div>
-                <p className="text-sm font-medium text-white italic mt-3 leading-relaxed">
+                <span className="text-xs font-mono text-[#15846e] font-medium block">
+                  THE MENTAL SHIFT
+                </span>
+                <p className="text-sm text-white font-extralight italic mt-3 leading-relaxed">
                   "{activeMilestone.changed}"
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-white/10 text-[11px] font-mono text-slate-400 flex items-center justify-between">
+              <div className="pt-4 border-t border-white/5 text-[11px] font-mono text-[#9a9a9a] flex items-center justify-between">
                 <span>Evolutionary Vector</span>
-                <span className="text-emerald-400">Continuous Mastery</span>
+                <span className="text-[#15846e]">Continuous Mastery</span>
               </div>
             </div>
           </div>

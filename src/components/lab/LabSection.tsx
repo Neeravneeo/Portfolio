@@ -77,6 +77,13 @@ export const LabSection: React.FC = () => {
     if (!ctx) return;
 
     let animId: number;
+    let isVisible = !document.hidden;
+
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     const width = (canvas.width = 320);
     const height = (canvas.height = 180);
 
@@ -99,33 +106,35 @@ export const LabSection: React.FC = () => {
     canvas.addEventListener('mousemove', onMouseMove);
 
     const render = () => {
-      ctx.clearRect(0, 0, width, height);
+      if (isVisible) {
+        ctx.clearRect(0, 0, width, height);
 
-      particles.forEach((p) => {
-        // Attract softly to mouse
-        const dx = mouseX - p.x;
-        const dy = mouseY - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > 5 && dist < 120) {
-          p.vx += (dx / dist) * 0.08;
-          p.vy += (dy / dist) * 0.08;
-        }
+        particles.forEach((p) => {
+          // Attract softly to mouse
+          const dx = mouseX - p.x;
+          const dy = mouseY - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 5 && dist < 120) {
+            p.vx += (dx / dist) * 0.08;
+            p.vy += (dy / dist) * 0.08;
+          }
 
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= 0.96;
-        p.vy *= 0.96;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.96;
+          p.vy *= 0.96;
 
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = isDesigner ? '#c084fc' : '#34d399';
-        ctx.fill();
-      });
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = isDesigner ? '#8052ff' : '#15846e';
+          ctx.fill();
+        });
+      }
 
       animId = requestAnimationFrame(render);
     };
@@ -134,6 +143,7 @@ export const LabSection: React.FC = () => {
 
     return () => {
       canvas.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       cancelAnimationFrame(animId);
     };
   }, [isDesigner]);
@@ -146,25 +156,27 @@ export const LabSection: React.FC = () => {
       : labExperiments.filter((exp) => exp.category === selectedCategory);
 
   return (
-    <section id="lab" className="relative py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+    <section id="lab" className="relative py-28 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto space-y-12">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel border border-white/10 text-xs font-mono">
-          <FlaskConical className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-400">04. EXPERIMENTAL PLAYGROUND</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-[#9a9a9a]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#ffb829] shadow-[0_0_6px_#ffb829] animate-pulse" />
+          <span>04. EXPERIMENTAL PLAYGROUND</span>
+          <span>•</span>
+          <span className="text-[#bdbdbd]">INTERACTIVE WIDGETS</span>
         </div>
 
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-0.035em] leading-[1.08]">
           The Lab
         </h2>
 
-        <div className="font-mono text-xs sm:text-sm tracking-widest text-slate-400 uppercase">
+        <div className="font-mono text-xs sm:text-sm tracking-widest text-[#9a9a9a] uppercase">
           Build • Test • Break • Learn • Repeat
         </div>
 
-        <p className="text-slate-400 max-w-2xl text-base sm:text-lg leading-relaxed">
-          Unfinished ideas, kinetic physics widgets, ML classifiers, and micro-interactions.
-          Nothing is hidden; every experiment is live and tactile.
+        <p className="text-[#bdbdbd] font-extralight text-lg sm:text-xl leading-[1.65] max-w-2xl">
+          Kinetic physics widgets, ML classifiers, telemetry dispatchers, and micro-interactions.
+          Nothing is hidden; every experiment is live, inspectable, and tactile.
         </p>
 
         {/* Category Pills */}
@@ -173,12 +185,12 @@ export const LabSection: React.FC = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all border ${
+              className={`px-4 py-2 rounded-full text-xs font-mono transition-all border ${
                 selectedCategory === cat
                   ? isDesigner
-                    ? 'bg-violet-600 text-white border-violet-400'
-                    : 'bg-emerald-600 text-white border-emerald-400'
-                  : 'bg-space-900/60 text-slate-400 border-white/10 hover:text-white'
+                    ? 'bg-[#8052ff] text-white border-[#8052ff] shadow-lg shadow-[#8052ff]/25'
+                    : 'bg-[#15846e] text-white border-[#15846e] shadow-lg shadow-[#15846e]/25'
+                  : 'bg-white/[0.03] text-[#9a9a9a] border-white/10 hover:text-white hover:border-white/20'
               }`}
             >
               {cat}
@@ -190,26 +202,26 @@ export const LabSection: React.FC = () => {
       {/* EXPERIMENTS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* EXP 1: UX Cognitive Load Scanner */}
-        <div className="rounded-3xl glass-panel border border-white/15 p-6 sm:p-7 bg-space-950/80 shadow-xl space-y-5">
+        <div className="rounded-3xl border border-white/10 p-6 sm:p-7 bg-white/[0.02] backdrop-blur-xl shadow-xl space-y-5">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div>
-              <span className="text-[10px] font-mono text-violet-400 uppercase font-bold">UX RESEARCH • LIVE HEURISTIC SCANNER</span>
-              <h3 className="text-lg font-bold text-white">Cognitive Load & Fitts' Law Calculator</h3>
+              <span className="text-[10px] font-mono text-[#8052ff] uppercase font-bold tracking-wider">UX RESEARCH • LIVE HEURISTIC SCANNER</span>
+              <h3 className="text-lg font-normal text-white">Cognitive Load & Fitts' Law Calculator</h3>
             </div>
-            <span className="px-2.5 py-1 rounded bg-violet-500/20 text-violet-300 text-xs font-mono">
+            <span className="px-2.5 py-1 rounded-full bg-[#8052ff]/15 text-[#8052ff] border border-[#8052ff]/30 text-xs font-mono">
               INTERACTIVE
             </span>
           </div>
 
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-[#bdbdbd] font-extralight">
             Adjust target size and contrast ratio to calculate accessibility ergonomics in real time.
           </p>
 
           <div className="space-y-4 text-xs font-mono">
             <div>
-              <div className="flex justify-between text-slate-300 mb-1">
+              <div className="flex justify-between text-[#bdbdbd] mb-1">
                 <span>Tap Target Size: {targetSize}px</span>
-                <span className={targetSize >= 48 ? 'text-emerald-400' : 'text-amber-400'}>
+                <span className={targetSize >= 48 ? 'text-[#15846e]' : 'text-[#ffb829]'}>
                   {targetSize >= 48 ? 'Complies with AAA' : 'Below 48px standard'}
                 </span>
               </div>
@@ -219,14 +231,14 @@ export const LabSection: React.FC = () => {
                 max="72"
                 value={targetSize}
                 onChange={(e) => setTargetSize(Number(e.target.value))}
-                className="w-full accent-violet-500"
+                className="w-full accent-[#8052ff]"
               />
             </div>
 
             <div>
-              <div className="flex justify-between text-slate-300 mb-1">
+              <div className="flex justify-between text-[#bdbdbd] mb-1">
                 <span>Contrast Ratio: {contrastRatio}:1</span>
-                <span className={contrastRatio >= 7.0 ? 'text-emerald-400' : 'text-amber-400'}>
+                <span className={contrastRatio >= 7.0 ? 'text-[#15846e]' : 'text-[#ffb829]'}>
                   {contrastRatio >= 7.0 ? 'WCAG AAA Enhanced' : 'WCAG AA Standard'}
                 </span>
               </div>
@@ -237,21 +249,21 @@ export const LabSection: React.FC = () => {
                 step="0.5"
                 value={contrastRatio}
                 onChange={(e) => setContrastRatio(Number(e.target.value))}
-                className="w-full accent-violet-500"
+                className="w-full accent-[#8052ff]"
               />
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-space-900 border border-white/10 flex items-center justify-between font-mono text-xs">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 flex items-center justify-between font-mono text-xs">
             <div>
-              <span className="text-slate-400 text-[10px] uppercase">ESTIMATED COGNITIVE FRICTION:</span>
-              <div className="text-base font-bold text-emerald-400">
+              <span className="text-[#9a9a9a] text-[10px] uppercase tracking-wider">ESTIMATED COGNITIVE FRICTION:</span>
+              <div className="text-base font-normal text-[#15846e]">
                 {targetSize >= 48 && contrastRatio >= 7 ? '0.12 (Ultra Low Friction)' : '0.48 (Elevated Burden)'}
               </div>
             </div>
             <div
               style={{ width: `${targetSize}px`, height: `${targetSize}px` }}
-              className="rounded-xl bg-violet-600/30 border border-violet-400 flex items-center justify-center text-[10px] text-white shrink-0"
+              className="rounded-xl bg-[#8052ff]/20 border border-[#8052ff]/50 flex items-center justify-center text-[10px] text-white shrink-0 font-mono"
             >
               Target
             </div>
@@ -259,56 +271,56 @@ export const LabSection: React.FC = () => {
         </div>
 
         {/* EXP 2: Kinetic 2D Particle Attractor */}
-        <div className="rounded-3xl glass-panel border border-white/15 p-6 sm:p-7 bg-space-950/80 shadow-xl space-y-5">
+        <div className="rounded-3xl border border-white/10 p-6 sm:p-7 bg-white/[0.02] backdrop-blur-xl shadow-xl space-y-5">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div>
-              <span className="text-[10px] font-mono text-cyan-400 uppercase font-bold">3D / GRAPHICS • CANVAS 2D PHYSICS</span>
-              <h3 className="text-lg font-bold text-white">Kinetic Gravity Particle Attractor</h3>
+              <span className="text-[10px] font-mono text-[#8052ff] uppercase font-bold tracking-wider">3D / GRAPHICS • CANVAS 2D PHYSICS</span>
+              <h3 className="text-lg font-normal text-white">Kinetic Gravity Particle Attractor</h3>
             </div>
-            <span className="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 text-xs font-mono">
+            <span className="px-2.5 py-1 rounded-full bg-[#8052ff]/15 text-[#8052ff] border border-[#8052ff]/30 text-xs font-mono">
               60 FPS CANVAS
             </span>
           </div>
 
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-[#bdbdbd] font-extralight">
             Hover your pointer across the viewport below. 45 gravitational particles calculate Newtonian vector attraction.
           </p>
 
-          <div className="rounded-xl bg-black border border-white/10 overflow-hidden flex items-center justify-center relative cursor-crosshair">
+          <div className="rounded-2xl bg-black border border-white/10 overflow-hidden flex items-center justify-center relative cursor-crosshair">
             <canvas ref={canvasRef} className="w-full h-[180px]" />
-            <span className="absolute bottom-2 right-2 text-[10px] font-mono text-slate-500 bg-black/60 px-2 py-0.5 rounded">
+            <span className="absolute bottom-2 right-2 text-[10px] font-mono text-[#9a9a9a] bg-black/80 border border-white/10 px-2 py-0.5 rounded-full">
               HOVER TO ATTRACT
             </span>
           </div>
         </div>
 
         {/* EXP 3: Micro-Automation Webhook Dispatcher */}
-        <div className="rounded-3xl glass-panel border border-white/15 p-6 sm:p-7 bg-space-950/80 shadow-xl space-y-5">
+        <div className="rounded-3xl border border-white/10 p-6 sm:p-7 bg-white/[0.02] backdrop-blur-xl shadow-xl space-y-5">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div>
-              <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold">AUTOMATION • N8N ENGINE RUNNER</span>
-              <h3 className="text-lg font-bold text-white">Idempotent Webhook Dispatcher</h3>
+              <span className="text-[10px] font-mono text-[#15846e] uppercase font-bold tracking-wider">AUTOMATION • N8N ENGINE RUNNER</span>
+              <h3 className="text-lg font-normal text-white">Idempotent Webhook Dispatcher</h3>
             </div>
             <button
               onClick={handleEmitWebhook}
               disabled={isEmitting}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-mono font-bold text-xs hover:bg-emerald-400 disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#15846e] text-white font-mono font-medium text-xs hover:bg-[#116e5c] disabled:opacity-50 transition-colors"
             >
               <Play className="w-3.5 h-3.5 fill-current" />
               <span>{isEmitting ? 'DISPATCHING...' : 'EMIT EVENT'}</span>
             </button>
           </div>
 
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-[#bdbdbd] font-extralight">
             Click "Emit Event" to trigger a mock micro-agent execution chain with payload hashing and receipt verification.
           </p>
 
-          <div className="p-4 rounded-xl bg-black/70 border border-white/10 min-h-[140px] font-mono text-xs text-slate-300 space-y-1.5 overflow-x-auto">
+          <div className="p-4 rounded-2xl bg-black border border-white/10 min-h-[140px] font-mono text-xs text-[#bdbdbd] space-y-1.5 overflow-x-auto">
             {webhookLog.length === 0 ? (
-              <span className="text-slate-600">Ready for dispatch. Click 'EMIT EVENT' to start...</span>
+              <span className="text-[#9a9a9a]">Ready for dispatch. Click 'EMIT EVENT' to start...</span>
             ) : (
               webhookLog.map((line, idx) => (
-                <div key={idx} className="text-emerald-300 leading-relaxed">
+                <div key={idx} className="text-[#15846e] leading-relaxed">
                   {line}
                 </div>
               ))
@@ -317,13 +329,13 @@ export const LabSection: React.FC = () => {
         </div>
 
         {/* EXP 4: Zero-Shot Multi-Intent Classifier */}
-        <div className="rounded-3xl glass-panel border border-white/15 p-6 sm:p-7 bg-space-950/80 shadow-xl space-y-5">
+        <div className="rounded-3xl border border-white/10 p-6 sm:p-7 bg-white/[0.02] backdrop-blur-xl shadow-xl space-y-5">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div>
-              <span className="text-[10px] font-mono text-amber-400 uppercase font-bold">AI SYSTEMS • INTENT ROUTER</span>
-              <h3 className="text-lg font-bold text-white">Zero-Shot Intent Classifier</h3>
+              <span className="text-[10px] font-mono text-[#ffb829] uppercase font-bold tracking-wider">AI SYSTEMS • INTENT ROUTER</span>
+              <h3 className="text-lg font-normal text-white">Zero-Shot Intent Classifier</h3>
             </div>
-            <span className="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 text-xs font-mono">
+            <span className="px-2.5 py-1 rounded-full bg-[#ffb829]/15 text-[#ffb829] border border-[#ffb829]/30 text-xs font-mono">
               LATENCY &lt; 35MS
             </span>
           </div>
@@ -333,10 +345,10 @@ export const LabSection: React.FC = () => {
               <button
                 key={idx}
                 onClick={() => handleClassify(p)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-mono border transition-all ${
+                className={`px-3 py-1 rounded-full text-[11px] font-mono border transition-all ${
                   classifierQuery === p
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-400'
-                    : 'bg-space-900 text-slate-400 border-white/10 hover:text-white'
+                    ? 'bg-[#ffb829]/20 text-[#ffb829] border-[#ffb829]/40'
+                    : 'bg-white/[0.02] text-[#9a9a9a] border-white/10 hover:text-white'
                 }`}
               >
                 Sample #{idx + 1}
@@ -344,18 +356,18 @@ export const LabSection: React.FC = () => {
             ))}
           </div>
 
-          <div className="p-4 rounded-xl bg-space-900 border border-white/10 space-y-2 text-xs font-mono">
-            <div className="flex justify-between text-slate-400">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 space-y-2 text-xs font-mono">
+            <div className="flex justify-between text-[#9a9a9a]">
               <span>ROUTED AGENT:</span>
-              <span className="text-amber-300 font-bold">{classificationResult.agent}</span>
+              <span className="text-[#ffb829] font-medium">{classificationResult.agent}</span>
             </div>
-            <div className="flex justify-between text-slate-400">
+            <div className="flex justify-between text-[#9a9a9a]">
               <span>CONFIDENCE SCORE:</span>
-              <span className="text-emerald-400 font-bold">{classificationResult.confidence}</span>
+              <span className="text-[#15846e] font-medium">{classificationResult.confidence}</span>
             </div>
-            <div className="flex justify-between text-slate-400">
+            <div className="flex justify-between text-[#9a9a9a]">
               <span>SUB-INTENT:</span>
-              <span className="text-white">{classificationResult.subIntent}</span>
+              <span className="text-white font-extralight">{classificationResult.subIntent}</span>
             </div>
           </div>
         </div>

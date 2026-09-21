@@ -77,13 +77,14 @@ Version: 1.1
 - [x] GoBuilder: Real-time natural language to UI compiler with copyable Tailwind/React output (`GoBuilderExperience.tsx`).
 - [x] Resilience Audit Fix 4 applied defensively across all experience lens mappings.
 
-### Phase 8 — Journey and Lab (Next)
+### Phase 8 — Journey and Lab ✅ (Completed)
+- [x] Orbital timeline track with connecting beam and year node selectors (`2021` to `2026 NOW`).
+- [x] Expanded year card: Chapter overview, key artifact badge, What I Learned, What I Built, and Mental Paradigm Shift.
+- [x] Interactive Lab experiment sandbox with Dala pill category filters (`All`, `AI`, `UX`, `3D`, `Automation`, `Frontend`, `Research`).
+- [x] 4 live interactive widgets: Fitts' law accessibility scanner, 60fps Newtonian particle attractor, idempotent webhook dispatcher, zero-shot intent classifier.
+- [x] Resilience Audit Fix 3 applied: Particle canvas animation loop pauses on tab backgrounding via `visibilitychange`.
 
-### Phase 8 — Journey and Lab
-- Orbital timeline.
-- Milestone expansion.
-- Lab filters.
-- Experiment cards.
+### Phase 9 — About and Contact (Next)
 
 ### Phase 9 — About and Contact
 - About.
