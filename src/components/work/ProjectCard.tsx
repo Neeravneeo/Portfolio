@@ -2,7 +2,7 @@ import React from 'react';
 import { Project } from '../../types';
 import { usePerspective } from '../../context/PerspectiveContext';
 import { TiltCard } from '../common/TiltCard';
-import { ArrowUpRight, Cpu, Layers, Activity } from 'lucide-react';
+import { ArrowUpRight, Cpu, Layers } from 'lucide-react';
 
 interface ProjectCardProps {
   project: Project;
@@ -12,17 +12,24 @@ interface ProjectCardProps {
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenExperience }) => {
   const { isDesigner } = usePerspective();
 
+  // Resilience Fix 4: Defensive fallbacks for nested lens objects
+  const designerHeadline = project.designer?.headline ?? 'System architecture and experience mapping';
+  const engineerHeadline = project.engineer?.headline ?? 'Technical pipeline and performance metrics';
+  const techStack = project.engineer?.techStack ?? [];
+  const categories = project.category ?? [];
+  const metrics = project.metrics ?? [];
+
   return (
     <TiltCard
       onClick={() => onOpenExperience(project.id)}
-      maxTilt={12}
+      maxTilt={10}
       scale={1.02}
-      className="p-6 sm:p-7 flex flex-col justify-between"
+      className="p-6 sm:p-7 flex flex-col justify-between bg-black/40 border border-white/10 hover:border-white/25 transition-all duration-300 group"
     >
       {/* Dynamic top gradient aura */}
       <div
-        className={`absolute -top-24 -right-24 w-48 h-48 rounded-full filter blur-3xl opacity-20 transition-opacity duration-300 group-hover:opacity-40 pointer-events-none ${
-          isDesigner ? 'bg-violet-500' : 'bg-emerald-500'
+        className={`absolute -top-24 -right-24 w-48 h-48 rounded-full filter blur-3xl opacity-20 transition-opacity duration-500 group-hover:opacity-40 pointer-events-none ${
+          isDesigner ? 'bg-[#8052ff]' : 'bg-[#15846e]'
         }`}
       />
 
@@ -31,116 +38,111 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenExperie
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span
-              className={`px-2.5 py-1 rounded-md text-[11px] font-mono tracking-wider uppercase font-semibold ${
+              className={`px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider uppercase font-semibold ${
                 isDesigner
-                  ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
-                  : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                  ? 'bg-[#8052ff]/15 text-[#8052ff] border border-[#8052ff]/30'
+                  : 'bg-[#15846e]/15 text-[#15846e] border border-[#15846e]/30'
               }`}
             >
-              {project.status}
+              {project.status || 'Active'}
             </span>
-            <span className="text-xs font-mono text-slate-500">{project.year}</span>
+            <span className="text-xs font-mono text-[#9a9a9a]">{project.year}</span>
           </div>
 
           <button
             type="button"
-            className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-white/10 flex items-center justify-center text-slate-400 group-hover:text-white transition-all duration-200"
+            className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-white/10 flex items-center justify-center text-[#9a9a9a] group-hover:text-white transition-all duration-200"
             aria-label={`Open ${project.title}`}
           >
-            <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#8052ff]" />
           </button>
         </div>
 
         <div>
-          <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-white transition-colors">
+          <h3 className="text-2xl font-normal tracking-tight text-white group-hover:text-white transition-colors">
             {project.title}
           </h3>
           <p
             className={`text-xs font-mono tracking-wide mt-0.5 ${
-              isDesigner ? 'text-violet-300' : 'text-emerald-300'
+              isDesigner ? 'text-[#8052ff]' : 'text-[#15846e]'
             }`}
           >
             {project.subtitle}
           </p>
         </div>
 
-        <p className="text-sm text-slate-300 leading-relaxed line-clamp-2">
+        <p className="text-sm text-[#bdbdbd] font-extralight leading-relaxed line-clamp-2">
           {project.tagline}
         </p>
       </div>
 
       {/* Center Interactive Perspective Preview Snippet */}
-      <div className="my-5 p-3.5 rounded-xl bg-space-950/60 border border-white/5 space-y-2 z-10">
+      <div className="my-5 p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2.5 z-10">
         {isDesigner ? (
           <div>
-            <div className="flex items-center gap-1.5 text-[11px] font-mono text-violet-300 mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono tracking-widest text-[#8052ff] uppercase mb-1">
               <Layers className="w-3 h-3" />
               <span>DESIGN LENS</span>
             </div>
-            <p className="text-xs text-slate-300 line-clamp-2 font-sans italic">
-              "{project.designer.headline}"
+            <p className="text-xs text-[#bdbdbd] line-clamp-2 font-sans italic font-light">
+              "{designerHeadline}"
             </p>
           </div>
         ) : (
           <div>
-            <div className="flex items-center gap-1.5 text-[11px] font-mono text-emerald-300 mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono tracking-widest text-[#15846e] uppercase mb-1">
               <Cpu className="w-3 h-3" />
               <span>ENGINEER LENS</span>
             </div>
-            <p className="text-xs text-slate-300 line-clamp-2 font-mono">
-              {project.engineer.headline}
+            <p className="text-xs text-[#bdbdbd] line-clamp-2 font-mono">
+              {engineerHeadline}
             </p>
           </div>
         )}
 
         {/* Metrics Bar */}
-        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
-          {project.metrics.slice(0, 2).map((m, idx) => (
-            <div key={idx} className="flex flex-col">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-tight">
-                {m.label}
-              </span>
-              <span className="text-sm font-mono font-bold text-white">
-                {m.value}
-              </span>
-            </div>
-          ))}
-        </div>
+        {metrics.length > 0 && (
+          <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-white/5">
+            {metrics.slice(0, 2).map((m, idx) => (
+              <div key={idx} className="flex flex-col">
+                <span className="text-[10px] font-mono text-[#9a9a9a] uppercase tracking-wider">
+                  {m.label}
+                </span>
+                <span className="text-sm font-mono font-medium text-white">
+                  {m.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Bottom Footer: Tags & Experience Launch trigger */}
       <div className="space-y-3 z-10">
         <div className="flex flex-wrap gap-1.5">
           {isDesigner
-            ? project.category.map((cat) => (
+            ? categories.map((cat) => (
                 <span
                   key={cat}
-                  className="px-2 py-0.5 rounded text-[10px] font-mono text-slate-400 bg-white/5"
+                  className="px-2.5 py-0.5 rounded-full text-[10px] font-mono text-[#9a9a9a] bg-white/[0.04] border border-white/5"
                 >
                   {cat}
                 </span>
               ))
-            : project.engineer.techStack.slice(0, 3).map((tech) => (
+            : techStack.slice(0, 3).map((tech) => (
                 <span
                   key={tech}
-                  className="px-2 py-0.5 rounded text-[10px] font-mono text-emerald-400/80 bg-emerald-950/30 border border-emerald-500/20"
+                  className="px-2.5 py-0.5 rounded-full text-[10px] font-mono text-[#15846e] bg-[#15846e]/10 border border-[#15846e]/20"
                 >
                   {tech}
                 </span>
               ))}
         </div>
 
-        <div className="pt-2 flex items-center justify-between text-xs font-mono">
-          <span
-            className={`flex items-center gap-1.5 font-medium ${
-              isDesigner ? 'text-violet-400' : 'text-emerald-400'
-            }`}
-          >
-            <Activity className="w-3.5 h-3.5" />
-            <span>Open Experience</span>
-          </span>
-          <span className="text-slate-500 group-hover:text-slate-300 transition-colors">
-            Interactive Space →
+        <div className="pt-2 flex items-center justify-between text-xs font-mono text-[#9a9a9a] group-hover:text-white transition-colors">
+          <span className="text-[11px] tracking-wider uppercase">Open Interactive Study</span>
+          <span className={isDesigner ? 'text-[#8052ff] font-semibold' : 'text-[#15846e] font-semibold'}>
+            →
           </span>
         </div>
       </div>

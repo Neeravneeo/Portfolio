@@ -46,14 +46,14 @@ Version: 1.1
 - [x] Secondary glass Resume CTA button (`variant="secondary"`).
 - [x] WebGL / 2D Canvas fallback with animated SVG constellation and neural nodes.
 
-### Phase 4 — Work (Next)
+### Phase 4 — Work ✅ (Completed)
+- [x] Strongly-typed project schema with dual-lens specification (`src/types/index.ts`).
+- [x] Category filters (`All`, `Design`, `Engineering`, `AI`, `Automation`, `Research`) with Dala pill toggles.
+- [x] Interactive 3D tilt cards with perspective auras (`ProjectCard.tsx` / `TiltCard.tsx`).
+- [x] Resilience Audit Fix 4 applied: Defensive null checks on nested lens objects (`project.designer?.headline`, `project.engineer?.headline`, `project.engineer?.techStack ?? []`, `project.metrics ?? []`).
+- [x] Direct interactive simulator launch integration.
 
-### Phase 4 — Work
-- Typed project schema.
-- Filters.
-- Project cards.
-- Project preview.
-- Lazy media loading.
+### Phase 5 — ALZO Flagship (Next)
 
 ### Phase 5 — ALZO
 - Three-role orbital selector.
