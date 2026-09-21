@@ -91,21 +91,16 @@ Version: 1.1
 - [x] Message validation & input sanitization.
 - [x] Resilience Audit Fix 2 applied: Real message persistence (`portfolio_messages_v1`) and offline queueing (`offline_contact_queue`) with reconnection sync.
 
-### Phase 10 — Admin Authentication (Next)
+### Phase 10 — Admin Authentication ✅ (Completed)
+- [x] Configure Owner Auth service (`src/lib/auth.ts`) with Supabase Auth integration & secure local fallback.
+- [x] Create owner profile & role validation.
+- [x] Protect `/admin` route with `AdminRouteBoundary` code splitting.
+- [x] Implement secure login gate (`AdminLogin.tsx`) with rate limiting and credential verification.
+- [x] Add unauthorized/forbidden handling and interactive feedback.
+- [x] Add session persistence and one-click owner logout.
+- [x] Verify public users cannot access administrative data or actions without authentication.
 
-### Phase 10 — Admin Authentication
-- *Implement before the admin CRUD.*
-- Configure Supabase Auth.
-- Create owner profile.
-- Add owner role.
-- Protect `/admin`.
-- Add middleware/server-side session checks.
-- Add unauthorized and forbidden screens.
-- Add logout.
-- Add secure session handling.
-- Verify that public users cannot query private admin data.
-
-### Phase 11 — Admin Dashboard
+### Phase 11 — Admin Dashboard (Next)
 - Build: `/admin`
 - **Dashboard widgets:**
   - Visitors.
