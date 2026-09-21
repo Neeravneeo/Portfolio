@@ -1,5 +1,4 @@
-import React, { useState, useRef } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
 import { usePerspective } from '../../context/PerspectiveContext';
 
 export interface TiltCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,7 +26,16 @@ export const TiltCard: React.FC<TiltCardProps> = ({
   ...props
 }) => {
   const { isDesigner } = usePerspective();
-  const shouldReduceMotion = useReducedMotion();
+  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setShouldReduceMotion(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setShouldReduceMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement | null>(null);

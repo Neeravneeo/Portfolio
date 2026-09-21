@@ -5,6 +5,8 @@ import { ProjectCategory } from '../../types';
 import { usePerspective } from '../../context/PerspectiveContext';
 import { ArrowRight, Sparkles, Layers, Activity, ShieldCheck, Heart } from 'lucide-react';
 
+import { AlzoShowcase3D } from '../3d/AlzoShowcase3D';
+
 interface WorkSectionProps {
   onOpenExperience: (projectId: string) => void;
 }
@@ -12,8 +14,6 @@ interface WorkSectionProps {
 export const WorkSection: React.FC<WorkSectionProps> = ({ onOpenExperience }) => {
   const { isDesigner } = usePerspective();
   const [selectedFilter, setSelectedFilter] = useState<ProjectCategory>('All');
-  const [alzoTilt, setAlzoTilt] = useState({ x: 0, y: 0 });
-  const alzoCardRef = useRef<HTMLDivElement>(null);
 
   const categories: ProjectCategory[] = [
     'All',
@@ -32,22 +32,6 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onOpenExperience }) =>
     selectedFilter === 'All'
       ? archiveProjects
       : archiveProjects.filter((p) => p.category.includes(selectedFilter));
-
-  const handleAlzoMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!alzoCardRef.current) return;
-    const rect = alzoCardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const tiltX = ((y - centerY) / centerY) * -5;
-    const tiltY = ((x - centerX) / centerX) * 5;
-    setAlzoTilt({ x: tiltX, y: tiltY });
-  };
-
-  const handleAlzoMouseLeave = () => {
-    setAlzoTilt({ x: 0, y: 0 });
-  };
 
   return (
     <section id="work" className="relative py-32 px-6 sm:px-10 lg:px-16 max-w-7xl mx-auto space-y-32">
@@ -114,50 +98,9 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onOpenExperience }) =>
             </div>
           </div>
 
-          {/* Right Column (40% equivalent: 5 cols): Interactive 3D Tilt Preview */}
-          <div className="lg:col-span-5 flex items-center justify-center">
-            <div
-              ref={alzoCardRef}
-              onMouseMove={handleAlzoMouseMove}
-              onMouseLeave={handleAlzoMouseLeave}
-              onClick={() => onOpenExperience('alzo')}
-              style={{
-                transform: `perspective(1000px) rotateX(${alzoTilt.x}deg) rotateY(${alzoTilt.y}deg)`,
-                transition: 'transform 0.15s ease-out',
-              }}
-              className="w-full h-80 sm:h-96 rounded-2xl bg-[#161616] border border-[#2a2a2a] p-6 flex flex-col justify-between shadow-[0_40px_120px_rgba(0,0,0,0.8)] cursor-pointer group hover:border-[#f59e0b]/50 transition-colors"
-            >
-              {/* Card Header */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                </div>
-                <span className="text-[11px] font-mono text-[#71717a]">
-                  LATENCY &lt; 4.2MS
-                </span>
-              </div>
-
-              {/* Graphic Representation */}
-              <div className="my-auto space-y-4 text-center">
-                <div className="w-16 h-16 mx-auto rounded-2xl bg-[#f59e0b]/10 border border-[#f59e0b]/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Layers className="w-8 h-8 text-[#f59e0b]" />
-                </div>
-                <div>
-                  <div className="text-base font-medium text-[#fafafa]">ALZO Core Engine</div>
-                  <div className="text-xs font-mono text-[#a1a1aa] mt-1">
-                    6-Layer Operational Stack
-                  </div>
-                </div>
-              </div>
-
-              {/* Card Footer */}
-              <div className="flex items-center justify-between text-xs font-mono text-[#71717a] pt-3 border-t border-[#222222]">
-                <span>ORBITAL SELECTOR</span>
-                <span className="text-[#f59e0b] group-hover:underline">CLICK TO RUN</span>
-              </div>
-            </div>
+          {/* Right Column (40% equivalent: 5 cols): Interactive 3D WebGL Showcase */}
+          <div className="lg:col-span-5 flex items-center justify-center w-full">
+            <AlzoShowcase3D onOpenExperience={() => onOpenExperience('alzo')} />
           </div>
         </div>
       </div>

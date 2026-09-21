@@ -3,6 +3,8 @@ import { profileData } from '../../data/profileData';
 import { usePerspective } from '../../context/PerspectiveContext';
 import { Palette, Cpu, Compass, Zap, FileText, ArrowRight } from 'lucide-react';
 
+import { SkillsConstellation3D } from '../3d/SkillsConstellation3D';
+
 interface AboutSectionProps {
   onOpenResume?: () => void;
 }
@@ -110,6 +112,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenResume }) => {
             WHAT I WORK WITH
           </h3>
         </div>
+
+        {/* 3D Interactive Skills Constellation Knowledge Graph */}
+        <SkillsConstellation3D />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[

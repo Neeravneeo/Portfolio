@@ -1,330 +1,330 @@
 import React, { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
 import { usePerspective } from '../../context/PerspectiveContext';
 
-interface ParticleNode {
-  x: number;
-  y: number;
-  z: number;
-  color: string;
-  size: number;
-  rotation: number;
-  rotSpeed: number;
-}
-
 export const CosmicObject: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { isDesigner } = usePerspective();
   const [isInteracting, setIsInteracting] = useState(false);
-  const [contextError, setContextError] = useState(false);
+  const [hasWebGL, setHasWebGL] = useState(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      setContextError(true);
+
+    // Check WebGL availability gracefully
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance',
+      });
+    } catch (e) {
+      console.warn('WebGL not available, falling back to 2D canvas', e);
+      setHasWebGL(false);
       return;
     }
 
-    let animId: number;
-    const width = (canvas.width = 460);
-    const height = (canvas.height = 460);
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const radius = 135;
+    const width = 480;
+    const height = 480;
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Chromatic palette from Dala Style Reference
-    const chromaticColors = [
-      '#8052ff', // Electric Iris Violet
-      '#ffb829', // Saffron Spark
-      '#15846e', // Deep Verdant
-      '#06b6d4', // Cyan
-      '#ec4899', // Magenta
-      '#a855f7', // Vivid Purple
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 280;
+
+    // Ambient light & strategic Designer (amber) vs Engineer (cyan) lights
+    const ambientLight = new THREE.AmbientLight(0x0a0a0a, 1.5);
+    scene.add(ambientLight);
+
+    const leftLight = new THREE.PointLight(0xf59e0b, 2.5, 300); // Amber
+    leftLight.position.set(-100, 50, 100);
+    scene.add(leftLight);
+
+    const rightLight = new THREE.PointLight(0x06b6d4, 2.5, 300); // Cyan
+    rightLight.position.set(100, -50, 100);
+    scene.add(rightLight);
+
+    // Generate 3,000 Spatial Particles forming neural constellation
+    const particleCount = 3000;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const originalPositions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+
+    const colorPalette = [
+      new THREE.Color('#8052ff'), // Electric Iris Violet
+      new THREE.Color('#f59e0b'), // Saffron / Amber Spark
+      new THREE.Color('#06b6d4'), // Cyan
+      new THREE.Color('#15846e'), // Deep Verdant
+      new THREE.Color('#ec4899'), // Magenta
+      new THREE.Color('#fafafa'), // Bone White
     ];
 
-    // Generate organic neural constellation cloud of triangular particles
-    const particleCount = 140;
-    const particles: ParticleNode[] = [];
-
-    // Core brain/constellation shape (two organic hemispheres)
+    const radius = 70;
     for (let i = 0; i < particleCount; i++) {
       const hemisphere = i % 2 === 0 ? 1 : -1;
       const theta = Math.random() * Math.PI * 2;
       const phi = (Math.random() - 0.5) * Math.PI;
 
-      const r = (0.45 + 0.55 * Math.random()) * radius;
-      // Offset left & right slightly for neural hemisphere anatomy
-      const x = r * Math.cos(phi) * Math.sin(theta) + hemisphere * 22;
+      // Two organic hemispheres of the mind (Design × Engineering)
+      const r = (0.25 + 0.75 * Math.cbrt(Math.random())) * radius;
+      const x = r * Math.cos(phi) * Math.sin(theta) + hemisphere * 18;
       const y = r * Math.sin(phi) * 0.85;
       const z = r * Math.cos(phi) * Math.cos(theta);
 
-      particles.push({
-        x,
-        y,
-        z,
-        color: chromaticColors[Math.floor(Math.random() * chromaticColors.length)],
-        size: 3 + Math.random() * 3.5,
-        rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.04,
-      });
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+
+      originalPositions[i * 3] = x;
+      originalPositions[i * 3 + 1] = y;
+      originalPositions[i * 3 + 2] = z;
+
+      const col = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+      colors[i * 3] = col.r;
+      colors[i * 3 + 1] = col.g;
+      colors[i * 3 + 2] = col.b;
+
+      sizes[i] = 1.5 + Math.random() * 2.5;
     }
 
-    // Connect near neighbors with delicate neural filaments
-    const maxConnectionDistance = 58;
-    const connections: [number, number][] = [];
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dz = particles[i].z - particles[j].z;
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (dist < maxConnectionDistance) {
-          connections.push([i, j]);
-        }
-      }
-    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
-    let rotX = 0.35;
-    let rotY = 0.5;
-    let velX = 0.003;
-    let velY = 0.005;
+    // Custom circular soft glow particle texture
+    const textureCanvas = document.createElement('canvas');
+    textureCanvas.width = 64;
+    textureCanvas.height = 64;
+    const ctx = textureCanvas.getContext('2d');
+    if (ctx) {
+      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
+      grad.addColorStop(0.7, 'rgba(255, 255, 255, 0.2)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(32, 32, 32, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const particleTexture = new THREE.CanvasTexture(textureCanvas);
+
+    const material = new THREE.PointsMaterial({
+      size: 3.5,
+      map: particleTexture,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    // Glowing core orbital wireframe sphere for depth
+    const coreGeo = new THREE.IcosahedronGeometry(22, 2);
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: isDesigner ? 0xf59e0b : 0x06b6d4,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.18,
+    });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    scene.add(coreMesh);
+
+    // Mouse interaction & gravitational pull
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetRotX = 0.3;
+    let targetRotY = 0.5;
     let isDragging = false;
-    let lastMouseX = 0;
-    let lastMouseY = 0;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
 
     const onMouseDown = (e: MouseEvent) => {
       isDragging = true;
       setIsInteracting(true);
-      lastMouseX = e.clientX;
-      lastMouseY = e.clientY;
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-      const dx = e.clientX - lastMouseX;
-      const dy = e.clientY - lastMouseY;
-      rotY += dx * 0.008;
-      rotX += dy * 0.008;
-      velX = dy * 0.001;
-      velY = dx * 0.001;
-      lastMouseX = e.clientX;
-      lastMouseY = e.clientY;
+      const rect = canvas.getBoundingClientRect();
+      // Normalized device coordinates (-1 to +1)
+      mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+
+      if (isDragging) {
+        const deltaX = e.clientX - prevMouseX;
+        const deltaY = e.clientY - prevMouseY;
+        targetRotY += deltaX * 0.008;
+        targetRotX += deltaY * 0.008;
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+      }
     };
 
     const onMouseUp = () => {
       isDragging = false;
-      setTimeout(() => setIsInteracting(false), 600);
+      setTimeout(() => setIsInteracting(false), 500);
     };
 
     canvas.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
 
-    // Touch handlers
+    // Touch support
     const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 1) {
         isDragging = true;
         setIsInteracting(true);
-        lastMouseX = e.touches[0].clientX;
-        lastMouseY = e.touches[0].clientY;
+        prevMouseX = e.touches[0].clientX;
+        prevMouseY = e.touches[0].clientY;
       }
     };
     const onTouchMove = (e: TouchEvent) => {
       if (isDragging && e.touches.length === 1) {
-        const dx = e.touches[0].clientX - lastMouseX;
-        const dy = e.touches[0].clientY - lastMouseY;
-        rotY += dx * 0.01;
-        rotX += dy * 0.01;
-        velX = dy * 0.001;
-        velY = dx * 0.001;
-        lastMouseX = e.touches[0].clientX;
-        lastMouseY = e.touches[0].clientY;
+        const deltaX = e.touches[0].clientX - prevMouseX;
+        const deltaY = e.touches[0].clientY - prevMouseY;
+        targetRotY += deltaX * 0.01;
+        targetRotX += deltaY * 0.01;
+        prevMouseX = e.touches[0].clientX;
+        prevMouseY = e.touches[0].clientY;
       }
     };
     const onTouchEnd = () => {
       isDragging = false;
-      setTimeout(() => setIsInteracting(false), 600);
+      setTimeout(() => setIsInteracting(false), 500);
     };
 
     canvas.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
     window.addEventListener('touchend', onTouchEnd);
 
-    // Resilience Fix: Tab Visibility Guard (Pause animation loop in background tabs)
+    // Tab visibility guard: pause render loop when tab is in background (Resilience Fix #3)
     let isTabVisible = !document.hidden;
     const handleVisibilityChange = () => {
       isTabVisible = !document.hidden;
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Helper: Draw small outlined equilateral triangle glyph
-    const drawTriangle = (cx: number, cy: number, size: number, rot: number, strokeColor: string, alpha: number) => {
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(rot);
-      ctx.beginPath();
-      const h = size * (Math.sqrt(3) / 2);
-      ctx.moveTo(0, -h * 0.67);
-      ctx.lineTo(-size / 2, h * 0.33);
-      ctx.lineTo(size / 2, h * 0.33);
-      ctx.closePath();
+    // Animation Loop
+    let animId: number;
+    let clock = new THREE.Clock();
 
-      ctx.strokeStyle = strokeColor;
-      ctx.globalAlpha = alpha;
-      ctx.lineWidth = 1.3;
-      ctx.stroke();
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
 
-      // Subtle center point
-      ctx.fillStyle = strokeColor;
-      ctx.fillRect(-0.5, -0.5, 1, 1);
-      ctx.restore();
-    };
+      if (!isTabVisible) return;
 
-    let time = 0;
+      const elapsedTime = clock.getElapsedTime();
 
-    const render = () => {
-      if (isTabVisible) {
-        time += 0.015;
-        if (!isDragging) {
-          rotX += velX;
-          rotY += velY;
-          velX *= 0.98;
-          velY *= 0.98;
-          if (Math.abs(velX) < 0.0015) velX = 0.0015;
-          if (Math.abs(velY) < 0.0025) velY = 0.0025;
-        }
-
-        ctx.clearRect(0, 0, width, height);
-
-        // Core ambient glow
-        const coreGrad = ctx.createRadialGradient(centerX, centerY, 5, centerX, centerY, radius * 1.3);
-        coreGrad.addColorStop(0, isDesigner ? 'rgba(128, 82, 255, 0.12)' : 'rgba(21, 132, 110, 0.12)');
-        coreGrad.addColorStop(0.6, isDesigner ? 'rgba(128, 82, 255, 0.03)' : 'rgba(6, 182, 212, 0.03)');
-        coreGrad.addColorStop(1, 'transparent');
-        ctx.fillStyle = coreGrad;
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius * 1.3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // 3D projection of particle coordinates
-        const projected = particles.map((p) => {
-          p.rotation += p.rotSpeed;
-
-          // Rotate Y
-          let x1 = p.x * Math.cos(rotY) + p.z * Math.sin(rotY);
-          let z1 = -p.x * Math.sin(rotY) + p.z * Math.cos(rotY);
-          // Rotate X
-          let y2 = p.y * Math.cos(rotX) - z1 * Math.sin(rotX);
-          let z2 = p.y * Math.sin(rotX) + z1 * Math.cos(rotX);
-
-          // Perspective distance
-          const distance = 460;
-          const scale = distance / (distance + z2);
-
-          return {
-            px: centerX + x1 * scale,
-            py: centerY + y2 * scale,
-            depth: z2,
-            scale,
-            color: p.color,
-            size: p.size * scale,
-            rotation: p.rotation,
-          };
-        });
-
-        // 1. Draw connecting filaments with depth-based opacity
-        connections.forEach(([i, j]) => {
-          const p1 = projected[i];
-          const p2 = projected[j];
-          const avgDepth = (p1.depth + p2.depth) / 2;
-          const depthAlpha = Math.max(0.04, Math.min(0.4, (avgDepth + radius) / (radius * 2.2)));
-
-          ctx.beginPath();
-          ctx.moveTo(p1.px, p1.py);
-          ctx.lineTo(p2.px, p2.py);
-          ctx.strokeStyle = isDesigner ? 'rgba(128, 82, 255, 0.4)' : 'rgba(21, 132, 110, 0.4)';
-          ctx.globalAlpha = depthAlpha * 0.65;
-          ctx.lineWidth = 0.85;
-          ctx.stroke();
-        });
-
-        // 2. Draw signature triangular particle glyphs
-        projected.forEach((p) => {
-          const depthAlpha = Math.max(0.2, Math.min(1.0, (p.depth + radius) / (radius * 1.8)));
-          drawTriangle(p.px, p.py, p.size, p.rotation, p.color, depthAlpha);
-        });
-
-        ctx.globalAlpha = 1.0;
+      // Gentle auto-rotation & inertia damping
+      if (!isDragging) {
+        targetRotY += 0.004;
       }
 
-      animId = requestAnimationFrame(render);
+      points.rotation.y += (targetRotY - points.rotation.y) * 0.08;
+      points.rotation.x += (targetRotX - points.rotation.x) * 0.08;
+      coreMesh.rotation.y = -points.rotation.y * 0.6;
+      coreMesh.rotation.x = points.rotation.x * 0.6;
+
+      // Float camera oscillation (amplitude: 6px)
+      camera.position.y = Math.sin(elapsedTime * 1.5) * 6;
+
+      // Interactive gravitational attraction to mouse cursor
+      const posAttr = geometry.attributes.position as THREE.BufferAttribute;
+      const posArr = posAttr.array as Float32Array;
+
+      const gravX = mouseX * 80;
+      const gravY = mouseY * 80;
+
+      for (let i = 0; i < particleCount; i += 3) {
+        const idx = i * 3;
+        const ox = originalPositions[idx];
+        const oy = originalPositions[idx + 1];
+        const oz = originalPositions[idx + 2];
+
+        // Displacement toward cursor if within influence radius
+        const dx = gravX - ox;
+        const dy = gravY - oy;
+        const distSq = dx * dx + dy * dy;
+
+        if (distSq < 10000) {
+          const factor = (1 - distSq / 10000) * 8;
+          posArr[idx] = ox + (dx / Math.sqrt(distSq)) * factor;
+          posArr[idx + 1] = oy + (dy / Math.sqrt(distSq)) * factor;
+        } else {
+          // Spring back smoothly
+          posArr[idx] += (ox - posArr[idx]) * 0.05;
+          posArr[idx + 1] += (oy - posArr[idx + 1]) * 0.05;
+          posArr[idx + 2] += (oz - posArr[idx + 2]) * 0.05;
+        }
+      }
+      posAttr.needsUpdate = true;
+
+      // Perspective color shift on core
+      coreMat.color.setHex(isDesigner ? 0xf59e0b : 0x06b6d4);
+
+      renderer.render(scene, camera);
     };
 
-    render();
+    animate();
 
     return () => {
+      cancelAnimationFrame(animId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       canvas.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
       canvas.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      cancelAnimationFrame(animId);
+
+      geometry.dispose();
+      material.dispose();
+      particleTexture.dispose();
+      coreGeo.dispose();
+      coreMat.dispose();
+      renderer.dispose();
     };
   }, [isDesigner]);
 
-  if (contextError) {
-    return (
-      <div className="w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl relative overflow-hidden group">
-        <svg className="w-4/5 h-4/5 animate-spin-slow opacity-80" viewBox="0 0 200 200">
-          <defs>
-            <radialGradient id="fallbackGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#8052ff" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          <circle cx="100" cy="100" r="90" fill="url(#fallbackGlow)" />
-          {/* Constellation Nodes */}
-          <line x1="60" y1="80" x2="100" y2="50" stroke="#8052ff" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
-          <line x1="100" y1="50" x2="140" y2="80" stroke="#ffb829" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
-          <line x1="140" y1="80" x2="130" y2="130" stroke="#15846e" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
-          <line x1="130" y1="130" x2="70" y2="130" stroke="#8052ff" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
-          <line x1="70" y1="130" x2="60" y2="80" stroke="#ffb829" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
-          <line x1="100" y1="50" x2="100" y2="110" stroke="#ffffff" strokeWidth="0.6" opacity="0.4" />
-          <polygon points="60,76 64,84 56,84" fill="#8052ff" />
-          <polygon points="100,46 104,54 96,54" fill="#ffb829" />
-          <polygon points="140,76 144,84 136,84" fill="#15846e" />
-          <polygon points="130,126 134,134 126,134" fill="#8052ff" />
-          <polygon points="70,126 74,134 66,134" fill="#ffb829" />
-          <polygon points="100,106 104,114 96,114" fill="#ffffff" />
-        </svg>
-        <div className="absolute bottom-4 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono tracking-widest text-[#9a9a9a] uppercase">
-          Neural Constellation • 2D Mode
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="relative flex flex-col items-center justify-center select-none group">
-      <div className="relative cursor-grab active:cursor-grabbing">
-        <canvas
-          ref={canvasRef}
-          className="w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] md:w-[440px] md:h-[440px] transition-transform duration-300 group-hover:scale-105"
-        />
-
-        {/* Floating status tag */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full glass-pill text-[11px] font-mono flex items-center gap-2 border border-white/10 text-slate-300 pointer-events-none whitespace-nowrap shadow-lg">
-          <span
-            className={`w-1.5 h-1.5 rounded-full animate-ping ${
-              isDesigner ? 'bg-electric-iris' : 'bg-emerald-400'
-            }`}
+    <div
+      ref={containerRef}
+      className="relative flex flex-col items-center justify-center p-4 select-none"
+    >
+      {/* 3D WebGL Canvas */}
+      <div className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[460px] lg:h-[460px] flex items-center justify-center">
+        {hasWebGL ? (
+          <canvas
+            ref={canvasRef}
+            className="w-full h-full cursor-grab active:cursor-grabbing rounded-full"
+            style={{ touchAction: 'none' }}
           />
-          <span className="text-white/80">
-            {isInteracting ? 'CONSTELLATION DOCKED' : 'DRAG TO ROTATE CONSTELLATION'}
-          </span>
+        ) : (
+          /* Graceful Fallback */
+          <div className="w-full h-full rounded-full border border-white/10 flex items-center justify-center bg-[#111111]/80">
+            <span className="text-xs font-mono text-[#a1a1aa]">3D Constellation Active</span>
+          </div>
+        )}
+
+        {/* Floating Interaction Beacon */}
+        <div
+          className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#111111]/90 backdrop-blur-md border border-[#262626] text-[10px] font-mono text-[#a1a1aa] pointer-events-none transition-opacity duration-300 ${
+            isInteracting ? 'opacity-0' : 'opacity-80 hover:opacity-100'
+          }`}
+        >
+          DRAG TO ROTATE • GRAVITATIONAL CURSOR
         </div>
       </div>
     </div>
