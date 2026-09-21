@@ -6,7 +6,11 @@ export const PerspectiveToggle: React.FC = () => {
   const { perspective, togglePerspective, isDesigner } = usePerspective();
 
   return (
-    <div className="relative inline-flex items-center p-1 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-md shadow-inner">
+    <div
+      role="radiogroup"
+      aria-label="Perspective View Mode"
+      className="relative inline-flex items-center p-1 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-md shadow-inner"
+    >
       {/* Sliding indicator pill */}
       <div
         className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-full transition-all duration-300 ease-out shadow-md ${
@@ -18,8 +22,11 @@ export const PerspectiveToggle: React.FC = () => {
 
       <button
         type="button"
+        role="radio"
+        aria-checked={isDesigner}
+        aria-label="Designer perspective"
         onClick={() => perspective !== 'designer' && togglePerspective()}
-        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 ${
+        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:outline-none ${
           isDesigner ? 'text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
         }`}
       >
@@ -29,8 +36,11 @@ export const PerspectiveToggle: React.FC = () => {
 
       <button
         type="button"
+        role="radio"
+        aria-checked={!isDesigner}
+        aria-label="Engineer perspective"
         onClick={() => perspective !== 'engineer' && togglePerspective()}
-        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 ${
+        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none ${
           !isDesigner ? 'text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
         }`}
       >

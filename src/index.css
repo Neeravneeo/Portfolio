@@ -4,16 +4,33 @@
 
 @layer base {
   :root {
+    /* Cosmic Palette Tokens */
+    --space-bg: #05070d;
+    --space-surface: #0b101c;
+    --space-card: #0f172a;
+    --space-border: rgba(255, 255, 255, 0.08);
+
+    /* Designer Perspective: Electric Violet */
     --designer-accent: 139, 92, 246;
+    --designer-secondary: 236, 72, 153;
     --designer-glow: rgba(139, 92, 246, 0.4);
+
+    /* Engineer Perspective: Emerald / Cyan */
     --engineer-accent: 16, 185, 129;
+    --engineer-secondary: 6, 182, 212;
     --engineer-glow: rgba(16, 185, 129, 0.4);
   }
 
   body {
-    background-color: #05070d;
+    background-color: var(--space-bg);
     color: #f1f5f9;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Accessible focus indicators */
+  :focus-visible {
+    outline: 2px solid #8b5cf6;
+    outline-offset: 2px;
   }
 }
 
@@ -62,26 +79,21 @@
 }
 
 .radial-cosmic-glow {
-  background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.14) 0%, transparent 60%);
 }
 
 .radial-engineer-glow {
-  background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.14) 0%, transparent 60%);
 }
 
-/* Scanline subtle animation */
-.scanline-effect {
-  position: relative;
-  overflow: hidden;
-}
-.scanline-effect::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-  z-index: 20;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
-  opacity: 0.2;
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
