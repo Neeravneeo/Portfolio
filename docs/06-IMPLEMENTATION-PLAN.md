@@ -12,36 +12,33 @@ Version: 1.1
 
 ## Phase Roadmap
 
-### Phase 0 — Foundation
-- Next.js + TypeScript (or React 19 + TypeScript + Vite).
-- Git repository.
-- Tailwind.
-- ESLint/formatting.
-- Environment variables.
-- Folder structure.
-- README containing the six product documents.
+### Phase 0 — Foundation ✅ (Completed)
+- [x] React 19 + TypeScript + Vite v8.
+- [x] Git repository with origin/main tracking.
+- [x] Tailwind CSS v4 with DTCG token design system.
+- [x] Environment variables (.env with Cloudflare verified token, .env.example).
+- [x] Folder structure & Supabase schema (`supabase/schema.sql`).
+- [x] README containing the six product documents & detailed `docs/`.
 
-### Phase 1 — Design System
-- Cosmic color tokens.
-- Typography.
-- Buttons.
-- Cards.
-- Toggle.
-- Navigation.
-- Chips.
-- Modals.
-- Motion primitives.
-- Reduced-motion behavior.
+### Phase 1 — Design System ✅ (Completed)
+- [x] Void black canvas (`#000000`) & Dala color tokens (`tokens.json`).
+- [x] Monolithic weight 400 sculptural display typography & weight 200 body styling.
+- [x] Electric Iris pill button (`variant="pill"`), Secondary, Ghost.
+- [x] Dynamic 3D interactive tilt cards (`TiltCard.tsx`, `Card.tsx`).
+- [x] PerspectiveToggle (`Designer ↔ Engineer`) with ARIA radiogroup.
+- [x] Dala chromatic triangular particle constellation with tab pause.
+- [x] Chips, Modals, Motion primitives with reduced-motion support.
 
-### Phase 2 — Application Shell
-- **Routes:** `/`, `/work`, `/journey`, `/lab`, `/about`, `/contact`, `/admin`
-- Global navigation.
-- Designer/Engineer state.
-- Public page transitions.
-- Mobile navigation.
-- Admin route boundary.
+### Phase 2 — Application Shell ✅ (Completed)
+- [x] **Routes:** `/`, `/work`, `/journey`, `/lab`, `/about`, `/contact`, `/admin` (via `useRouter.ts`).
+- [x] Global Error Boundary (Audit Resilience Fix 1).
+- [x] Background tab performance guard (`document.hidden` pause in canvas).
+- [x] Global navigation with active route sync & smooth spatial scrolling.
+- [x] Designer/Engineer perspective toggle context.
+- [x] Secret Owner access shortcut (`Ctrl+Shift+A`).
+- [x] Code-split Admin route boundary with isolated dynamic bundle chunk.
 
-### Phase 3 — Home
+### Phase 3 — Home (Next)
 - Cosmic hero.
 - One high-quality 3D scene.
 - Featured project.

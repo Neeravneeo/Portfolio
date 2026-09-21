@@ -11,6 +11,8 @@ import { ContactSection } from './components/contact/ContactSection';
 import { Footer } from './components/common/Footer';
 import { ResumeModal } from './components/common/ResumeModal';
 import { projectsData } from './data/projectsData';
+import { useRouter } from './hooks/useRouter';
+import { AdminRouteBoundary } from './components/admin/AdminRouteBoundary';
 
 // Project Experiences
 import { AlzoExperience } from './components/work/experiences/AlzoExperience';
@@ -21,13 +23,20 @@ import { InnerOSExperience } from './components/work/experiences/InnerOSExperien
 import { GoBuilderExperience } from './components/work/experiences/GoBuilderExperience';
 
 export const AppContent: React.FC = () => {
-  const [activeSection, setActiveSection] = useState('home');
-  const [activeExperienceId, setActiveExperienceId] = useState<string | null>(null);
+  const router = useRouter();
+  const [activeSection, setActiveSection] = useState<string>(router.currentRoute);
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
 
-  // Monitor active scroll section
+  // Sync route changes to active section
   useEffect(() => {
-    if (activeExperienceId) return;
+    if (!router.isAdmin) {
+      setActiveSection(router.currentRoute);
+    }
+  }, [router.currentRoute, router.isAdmin]);
+
+  // Monitor active scroll section in public view
+  useEffect(() => {
+    if (router.isAdmin || router.activeExperienceId) return;
 
     const handleScroll = () => {
       const sections = ['home', 'work', 'journey', 'lab', 'about', 'contact'];
@@ -46,86 +55,65 @@ export const AppContent: React.FC = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeExperienceId]);
+  }, [router.isAdmin, router.activeExperienceId]);
 
-  const handleNavigate = (sectionId: string) => {
-    setActiveExperienceId(null);
-    setActiveSection(sectionId);
-    setTimeout(() => {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 50);
-  };
+  // If on admin route, render lazy admin shell
+  if (router.isAdmin) {
+    return <AdminRouteBoundary onBackToPublic={() => router.navigate('home')} />;
+  }
 
-  const handleOpenExperience = (projectId: string) => {
-    setActiveExperienceId(projectId);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleBackToUniverse = () => {
-    setActiveExperienceId(null);
-    setTimeout(() => {
-      const el = document.getElementById('work');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 50);
-  };
-
-  const activeProject = activeExperienceId
-    ? projectsData.find((p) => p.id === activeExperienceId)
+  const activeProject = router.activeExperienceId
+    ? projectsData.find((p) => p.id === router.activeExperienceId)
     : null;
 
   return (
-    <div className="relative min-h-screen selection:bg-violet-500/30 selection:text-white bg-[#05070d]">
+    <div className="relative min-h-screen selection:bg-[#8052ff]/30 selection:text-white bg-black text-white font-sans">
       {/* Background Interactive Cosmic Canvas */}
       <CosmicBackground />
 
       {/* Global OS Navigation */}
       <Navbar
         activeSection={activeSection}
-        onNavigate={handleNavigate}
+        onNavigate={(section) => router.navigate(section)}
         onOpenResume={() => setResumeModalOpen(true)}
       />
 
       {/* Main Viewport Container */}
       <main className="relative z-10">
-        {activeExperienceId && activeProject ? (
+        {router.activeExperienceId && activeProject ? (
           // Dedicated Project Experience View
           <div>
-            {activeExperienceId === 'alzo' && (
-              <AlzoExperience project={activeProject} onBack={handleBackToUniverse} />
+            {router.activeExperienceId === 'alzo' && (
+              <AlzoExperience project={activeProject} onBack={router.closeExperience} />
             )}
-            {activeExperienceId === 'peerclub' && (
-              <PeerClubExperience project={activeProject} onBack={handleBackToUniverse} />
+            {router.activeExperienceId === 'peerclub' && (
+              <PeerClubExperience project={activeProject} onBack={router.closeExperience} />
             )}
-            {activeExperienceId === 'gitdrive' && (
-              <GitDriveExperience project={activeProject} onBack={handleBackToUniverse} />
+            {router.activeExperienceId === 'gitdrive' && (
+              <GitDriveExperience project={activeProject} onBack={router.closeExperience} />
             )}
-            {activeExperienceId === 'ai-email-agent' && (
-              <EmailAgentExperience project={activeProject} onBack={handleBackToUniverse} />
+            {router.activeExperienceId === 'ai-email-agent' && (
+              <EmailAgentExperience project={activeProject} onBack={router.closeExperience} />
             )}
-            {activeExperienceId === 'inneros' && (
-              <InnerOSExperience project={activeProject} onBack={handleBackToUniverse} />
+            {router.activeExperienceId === 'inneros' && (
+              <InnerOSExperience project={activeProject} onBack={router.closeExperience} />
             )}
-            {activeExperienceId === 'gobuilder' && (
-              <GoBuilderExperience project={activeProject} onBack={handleBackToUniverse} />
+            {router.activeExperienceId === 'gobuilder' && (
+              <GoBuilderExperience project={activeProject} onBack={router.closeExperience} />
             )}
           </div>
         ) : (
           // Spatial Portfolio Universe
           <>
             <HeroSection
-              onExploreWork={() => handleNavigate('work')}
+              onExploreWork={() => router.navigate('work')}
               onOpenResume={() => setResumeModalOpen(true)}
-              onSelectProject={handleOpenExperience}
+              onSelectProject={router.openExperience}
             />
 
-            <WorkSection onOpenExperience={handleOpenExperience} />
+            <WorkSection onOpenExperience={router.openExperience} />
 
             <JourneySection />
 

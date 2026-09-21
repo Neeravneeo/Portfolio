@@ -74,25 +74,25 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onOpe
           </button>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-space-900/60 p-1 rounded-full border border-white/10 backdrop-blur-md">
+          <nav className="hidden md:flex items-center gap-1 bg-black/60 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
             {navItems.map((item) => {
               const isActive = activeSection === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`relative px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                  className={`relative px-4 py-1.5 rounded-full text-[13px] uppercase tracking-[0.025em] font-medium transition-all duration-200 ${
                     isActive
                       ? 'text-white'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                      : 'text-[#9a9a9a] hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {isActive && (
                     <span
                       className={`absolute inset-0 rounded-full transition-colors duration-300 -z-10 ${
                         isDesigner
-                          ? 'bg-gradient-to-r from-violet-600/60 to-fuchsia-600/60 border border-violet-400/40 shadow-sm'
-                          : 'bg-gradient-to-r from-emerald-600/60 to-teal-600/60 border border-emerald-400/40 shadow-sm'
+                          ? 'bg-[#8052ff] shadow-sm shadow-[#8052ff]/30'
+                          : 'bg-[#15846e] shadow-sm shadow-[#15846e]/30'
                       }`}
                     />
                   )}
