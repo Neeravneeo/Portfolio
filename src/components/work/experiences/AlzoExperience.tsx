@@ -288,49 +288,49 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 animate-fadeIn">
+    <div className="min-h-screen pt-28 pb-24 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto space-y-12 animate-fadeIn bg-black text-white">
       {/* Top Bar Navigation */}
       <div className="flex items-center justify-between pb-6 border-b border-white/10">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono text-[#9a9a9a] hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>BACK TO WORK UNIVERSE</span>
         </button>
 
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
-          <span className="text-xs font-mono text-slate-300 uppercase tracking-wider">
-            ALZO FLAGSHIP INTERACTIVE EXPERIENCE
+        <div className="flex items-center gap-2.5">
+          <span className="w-2 h-2 rounded-full bg-[#ffb829] shadow-[0_0_8px_#ffb829] animate-pulse" />
+          <span className="text-xs font-mono text-[#9a9a9a] uppercase tracking-wider">
+            ALZO FLAGSHIP INTERACTIVE CASE STUDY
           </span>
         </div>
       </div>
 
       {/* Hero Presentation */}
       <div className="space-y-4 max-w-3xl">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-xs font-mono text-violet-300">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8052ff]/10 border border-[#8052ff]/30 text-xs font-mono text-[#8052ff]">
           <Activity className="w-3.5 h-3.5" />
-          <span>2D SPATIAL EXPLORATION SYSTEM</span>
+          <span>SPATIAL HEALTHCARE SIMULATOR</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
-          ALZO: Alzheimer's Healthcare Ecosystem
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-0.035em] leading-[1.05]">
+          ALZO: Autonomous Healthcare Ecosystem
         </h1>
-        <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-          {project.tagline} Rather than static mockups, experience how ALZO coordinates
-          between three distinct stakeholders horizontally, and deep operational capabilities vertically.
+        <p className="text-base sm:text-lg text-[#bdbdbd] font-extralight leading-[1.65]">
+          {project.tagline} Rather than passive UI mockups, explore how ALZO coordinates
+          between three distinct stakeholders horizontally, and six operational capabilities vertically.
         </p>
       </div>
 
       {/* 2D SPATIAL EXPLORATION SYSTEM */}
-      <div className="rounded-3xl glass-panel border border-white/15 p-6 sm:p-8 space-y-8 bg-space-950/80 shadow-2xl">
+      <div className="rounded-3xl border border-white/10 p-6 sm:p-8 space-y-8 bg-white/[0.02] backdrop-blur-xl shadow-2xl">
         {/* Horizontal Role Selector */}
         <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+          <div className="flex items-center justify-between text-xs font-mono text-[#9a9a9a]">
             <span className="flex items-center gap-1.5">
-              <span>← DRAG / SELECT ROLE HORIZONTALLY →</span>
+              <span>← SELECT STAKEHOLDER ROLE HORIZONTALLY →</span>
             </span>
-            <span className="text-violet-400 font-semibold">ACTIVE: {activeRole.toUpperCase()}</span>
+            <span className="text-[#8052ff] font-semibold">ACTIVE: {activeRole.toUpperCase()}</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -343,8 +343,8 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
                   onClick={() => setActiveRole(role.id)}
                   className={`p-4 rounded-2xl text-left transition-all duration-300 border relative overflow-hidden ${
                     isActive
-                      ? 'bg-gradient-to-br from-violet-900/60 to-space-900 border-violet-400/60 shadow-glow-designer'
-                      : 'bg-space-900/50 border-white/10 hover:border-white/20'
+                      ? 'bg-[#8052ff]/15 border-[#8052ff]/60 shadow-lg shadow-[#8052ff]/20'
+                      : 'bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -503,21 +503,21 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
 
             {/* Persona Matrix */}
             <div className="space-y-4">
-              <span className="text-xs font-mono text-violet-400 uppercase tracking-wider">
+              <span className="text-xs font-mono text-[#8052ff] uppercase tracking-wider">
                 03. Three-Stakeholder Persona Matrix
               </span>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {project.designer.personas.map((persona, idx) => (
-                  <div key={idx} className="p-5 rounded-2xl bg-space-900/80 border border-white/10 space-y-3">
-                    <h4 className="text-base font-bold text-white">{persona.role}</h4>
+                {(project.designer?.personas ?? []).map((persona, idx) => (
+                  <div key={idx} className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+                    <h4 className="text-base font-normal text-white">{persona.role}</h4>
                     <div className="space-y-2 text-xs">
                       <div>
-                        <span className="text-slate-400 font-mono">PRIMARY FOCUS:</span>
-                        <p className="text-slate-200 mt-0.5">{persona.focus}</p>
+                        <span className="text-[#9a9a9a] font-mono">PRIMARY FOCUS:</span>
+                        <p className="text-[#bdbdbd] font-extralight mt-0.5">{persona.focus}</p>
                       </div>
                       <div>
-                        <span className="text-amber-400 font-mono">CORE PAIN POINT:</span>
-                        <p className="text-slate-300 mt-0.5">{persona.painPoint}</p>
+                        <span className="text-[#ffb829] font-mono">CORE PAIN POINT:</span>
+                        <p className="text-[#bdbdbd] font-extralight mt-0.5">{persona.painPoint}</p>
                       </div>
                     </div>
                   </div>
@@ -526,17 +526,17 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
             </div>
 
             {/* User Journey Flow */}
-            <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
-              <span className="text-xs font-mono text-violet-400 uppercase tracking-wider">
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+              <span className="text-xs font-mono text-[#8052ff] uppercase tracking-wider">
                 04. Patient & Caregiver Symbiotic Journey
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {project.designer.userJourney.map((j, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-space-950/60 border border-white/5 space-y-2">
-                    <span className="text-xs font-mono font-bold text-violet-300">STAGE {idx + 1}: {j.step}</span>
-                    <p className="text-xs text-slate-300 leading-relaxed">{j.action}</p>
-                    <div className="pt-2 text-[11px] font-mono text-emerald-400">
-                      Feel: {j.emotion}
+                {(project.designer?.userJourney ?? []).map((j, idx) => (
+                  <div key={idx} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-2">
+                    <span className="text-xs font-mono text-[#8052ff]">STAGE {idx + 1}: {j.step}</span>
+                    <p className="text-xs text-[#bdbdbd] font-extralight leading-relaxed">{j.action}</p>
+                    <div className="pt-2 text-[11px] font-mono text-[#15846e]">
+                      State: {j.emotion}
                     </div>
                   </div>
                 ))}
@@ -545,33 +545,33 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
 
             {/* Design System & Outcome */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-3">
-                <span className="text-xs font-mono text-violet-400 uppercase tracking-wider">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+                <span className="text-xs font-mono text-[#8052ff] uppercase tracking-wider">
                   05. Neuro-Accessible Design System
                 </span>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  {project.designer.designSystemHighlights.map((hl, idx) => (
+                <ul className="space-y-2 text-sm text-[#bdbdbd] font-extralight">
+                  {(project.designer?.designSystemHighlights ?? []).map((hl, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="text-violet-400 mt-1">✓</span>
+                      <span className="text-[#8052ff] mt-0.5">✓</span>
                       <span>{hl}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-6 rounded-2xl bg-gradient-to-br from-violet-950/40 to-space-900 border border-violet-500/30 p-6 space-y-3">
-                <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-[#8052ff]/30 space-y-3">
+                <span className="text-xs font-mono text-[#15846e] uppercase tracking-wider">
                   06. Clinical Trial Outcome
                 </span>
-                <h4 className="text-lg font-bold text-white">Measurable Impact</h4>
-                <p className="text-sm text-slate-200 leading-relaxed">
-                  {project.designer.outcome}
+                <h4 className="text-lg font-normal text-white">Measurable Impact</h4>
+                <p className="text-sm text-[#bdbdbd] font-extralight leading-relaxed">
+                  {project.designer?.outcome}
                 </p>
                 <div className="pt-2 grid grid-cols-2 gap-3">
-                  {project.metrics.map((m, idx) => (
-                    <div key={idx} className="p-2.5 rounded-lg bg-black/40 border border-white/10">
-                      <span className="text-[10px] font-mono text-slate-400">{m.label}</span>
-                      <p className="text-base font-mono font-bold text-violet-300">{m.value}</p>
+                  {(project.metrics ?? []).map((m, idx) => (
+                    <div key={idx} className="p-2.5 rounded-xl bg-black/50 border border-white/10">
+                      <span className="text-[10px] font-mono text-[#9a9a9a]">{m.label}</span>
+                      <p className="text-base font-mono font-medium text-[#8052ff]">{m.value}</p>
                     </div>
                   ))}
                 </div>
@@ -582,21 +582,21 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
           /* ENGINEER PERSPECTIVE VIEW */
           <div className="space-y-8 animate-fadeIn">
             {/* Architecture Overview */}
-            <div className="p-6 rounded-2xl glass-panel border border-emerald-500/20 space-y-4">
-              <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-[#15846e]/30 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-mono text-[#15846e]">
                 <Server className="w-4 h-4" />
                 <span>01. SYSTEM ARCHITECTURE & EDGE SENSING TOPOLOGY</span>
               </div>
-              <h3 className="text-xl font-bold text-white">{project.engineer.headline}</h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {project.engineer.architectureSummary}
+              <h3 className="text-xl font-normal text-white">{project.engineer?.headline}</h3>
+              <p className="text-sm text-[#bdbdbd] font-extralight leading-relaxed">
+                {project.engineer?.architectureSummary}
               </p>
               
               <div className="flex flex-wrap gap-2 pt-2">
-                {project.engineer.techStack.map((tech) => (
+                {(project.engineer?.techStack ?? []).map((tech) => (
                   <span
                     key={tech}
-                    className="px-3 py-1 rounded-md text-xs font-mono text-emerald-300 bg-emerald-950/40 border border-emerald-500/30"
+                    className="px-3 py-1 rounded-full text-xs font-mono text-[#15846e] bg-[#15846e]/10 border border-[#15846e]/30"
                   >
                     {tech}
                   </span>
@@ -605,19 +605,19 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
             </div>
 
             {/* End-to-End System Pipeline */}
-            <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
-              <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider">
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+              <span className="text-xs font-mono text-[#15846e] uppercase tracking-wider">
                 02. Real-Time Telemetry Flow (Edge to Alert Dispatch)
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                {project.engineer.systemFlow.map((sf, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-space-950/70 border border-white/10 space-y-2">
-                    <span className="text-[11px] font-mono text-emerald-400 font-bold">
+                {(project.engineer?.systemFlow ?? []).map((sf, idx) => (
+                  <div key={idx} className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
+                    <span className="text-[11px] font-mono text-[#15846e] font-bold">
                       STAGE 0{idx + 1}
                     </span>
-                    <h5 className="text-xs font-bold text-white">{sf.stage}</h5>
-                    <p className="text-xs text-slate-300">{sf.component}</p>
-                    <div className="pt-1 text-[11px] font-mono text-slate-400 border-t border-white/5">
+                    <h5 className="text-xs font-normal text-white">{sf.stage}</h5>
+                    <p className="text-xs text-[#bdbdbd] font-extralight">{sf.component}</p>
+                    <div className="pt-1 text-[11px] font-mono text-[#9a9a9a] border-t border-white/5">
                       {sf.throughputOrDetail}
                     </div>
                   </div>
@@ -627,28 +627,28 @@ export const AlzoExperience: React.FC<AlzoExperienceProps> = ({ project, onBack 
 
             {/* Hard Engineering Challenges & Performance */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-3">
-                <span className="text-xs font-mono text-amber-400 uppercase tracking-wider">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+                <span className="text-xs font-mono text-[#ffb829] uppercase tracking-wider">
                   03. Critical Engineering Challenges
                 </span>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  {project.engineer.keyChallenges.map((kc, idx) => (
+                <ul className="space-y-2 text-sm text-[#bdbdbd] font-extralight">
+                  {(project.engineer?.keyChallenges ?? []).map((kc, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="text-amber-400 mt-1">!</span>
+                      <span className="text-[#ffb829] mt-0.5">!</span>
                       <span>{kc}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-950/40 to-space-900 border border-emerald-500/30 p-6 space-y-3">
-                <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-[#15846e]/30 space-y-3">
+                <span className="text-xs font-mono text-[#15846e] uppercase tracking-wider">
                   04. Validated Performance Benchmarks
                 </span>
-                <ul className="space-y-2 text-sm text-slate-200">
-                  {project.engineer.performanceGains.map((pg, idx) => (
+                <ul className="space-y-2 text-sm text-[#bdbdbd] font-extralight">
+                  {(project.engineer?.performanceGains ?? []).map((pg, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-1">✓</span>
+                      <span className="text-[#15846e] mt-0.5">✓</span>
                       <span>{pg}</span>
                     </li>
                   ))}
