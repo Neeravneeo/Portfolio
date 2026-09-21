@@ -13,6 +13,9 @@ export type { ModalProps } from './Modal';
 export { FadeIn, SlideUp, StaggerContainer, StaggerItem } from './Motion';
 export type { MotionProps } from './Motion';
 
+export { TiltCard } from './TiltCard';
+export type { TiltCardProps } from './TiltCard';
+
 export { PerspectiveToggle } from './PerspectiveToggle';
 export { CosmicBackground } from './CosmicBackground';
 export { Navbar } from './Navbar';

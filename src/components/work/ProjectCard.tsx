@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Project } from '../../types';
 import { usePerspective } from '../../context/PerspectiveContext';
-import { ArrowUpRight, Cpu, Layers, Sparkles, Activity } from 'lucide-react';
+import { TiltCard } from '../common/TiltCard';
+import { ArrowUpRight, Cpu, Layers, Activity } from 'lucide-react';
 
 interface ProjectCardProps {
   project: Project;
@@ -10,51 +11,13 @@ interface ProjectCardProps {
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenExperience }) => {
   const { isDesigner } = usePerspective();
-  const cardRef = useRef<HTMLDivElement | null>(null);
-  const [rotX, setRotX] = useState(0);
-  const [rotY, setRotY] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-    setRotX(rotateX);
-    setRotY(rotateY);
-  };
-
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setRotX(0);
-    setRotY(0);
-  };
 
   return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+    <TiltCard
       onClick={() => onOpenExperience(project.id)}
-      style={{
-        transform: `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(${
-          isHovered ? 1.02 : 1
-        }, ${isHovered ? 1.02 : 1}, 1)`,
-        transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out',
-      }}
-      className={`group relative rounded-2xl glass-panel p-6 sm:p-7 flex flex-col justify-between cursor-pointer border transition-all duration-300 overflow-hidden ${
-        isHovered
-          ? isDesigner
-            ? 'border-violet-500/50 shadow-glow-designer bg-space-850/90'
-            : 'border-emerald-500/50 shadow-glow-engineer bg-space-850/90'
-          : 'border-white/10 hover:border-white/20'
-      }`}
+      maxTilt={12}
+      scale={1.02}
+      className="p-6 sm:p-7 flex flex-col justify-between"
     >
       {/* Dynamic top gradient aura */}
       <div
@@ -181,6 +144,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenExperie
           </span>
         </div>
       </div>
-    </div>
+    </TiltCard>
   );
 };
