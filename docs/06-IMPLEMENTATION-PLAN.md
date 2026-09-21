@@ -84,15 +84,14 @@ Version: 1.1
 - [x] 4 live interactive widgets: Fitts' law accessibility scanner, 60fps Newtonian particle attractor, idempotent webhook dispatcher, zero-shot intent classifier.
 - [x] Resilience Audit Fix 3 applied: Particle canvas animation loop pauses on tab backgrounding via `visibilitychange`.
 
-### Phase 9 — About and Contact (Next)
+### Phase 9 — About and Contact ✅ (Completed)
+- [x] About section: Philosophy, bio, 4 pillars (`Product Intuition`, `Systems Architecture`, `AI & Automation`, `Craft & Performance`), What I Care About, tech stack matrix, and experience/education timeline.
+- [x] Resume modal integration with downloadable CV links.
+- [x] Direct communication beacon: Glowing signal core and verified contact nodes (Email, LinkedIn, GitHub, Resume).
+- [x] Message validation & input sanitization.
+- [x] Resilience Audit Fix 2 applied: Real message persistence (`portfolio_messages_v1`) and offline queueing (`offline_contact_queue`) with reconnection sync.
 
-### Phase 9 — About and Contact
-- About.
-- Resume.
-- Skills/focus.
-- Contact.
-- Message validation.
-- Success/error states.
+### Phase 10 — Admin Authentication (Next)
 
 ### Phase 10 — Admin Authentication
 - *Implement before the admin CRUD.*
