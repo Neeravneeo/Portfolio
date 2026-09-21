@@ -2,7 +2,7 @@ import React from 'react';
 import { usePerspective } from '../../context/PerspectiveContext';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'pill';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
@@ -24,29 +24,33 @@ export const Button: React.FC<ButtonProps> = ({
 
   // Size definitions
   const sizeClasses = {
-    sm: 'px-3 py-1.5 text-xs rounded-lg gap-1.5',
-    md: 'px-4 py-2 text-xs sm:text-sm rounded-xl gap-2',
-    lg: 'px-6 py-3 text-sm sm:text-base rounded-2xl gap-2.5',
+    sm: 'px-3.5 py-1.5 text-xs rounded-full gap-1.5',
+    md: 'px-5 py-2.5 text-xs sm:text-sm rounded-full gap-2',
+    lg: 'px-6 py-3.5 text-sm sm:text-base rounded-full gap-2.5',
   }[size];
 
   // Variant definitions
   let variantClasses = '';
   switch (variant) {
+    case 'pill':
+      variantClasses =
+        'bg-[#8052ff] hover:bg-[#7040f5] text-white uppercase tracking-[0.025em] font-semibold shadow-lg shadow-[#8052ff]/30 hover:scale-[1.02] border-0';
+      break;
     case 'primary':
       variantClasses = isDesigner
-        ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white shadow-lg shadow-violet-600/25 border border-violet-400/30'
-        : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-600/25 border border-emerald-400/30';
+        ? 'bg-gradient-to-r from-[#8052ff] to-fuchsia-600 hover:from-[#7040f5] hover:to-fuchsia-500 text-white shadow-lg shadow-[#8052ff]/25 border border-[#8052ff]/30'
+        : 'bg-gradient-to-r from-[#15846e] to-teal-600 hover:from-[#116e5c] hover:to-teal-500 text-white shadow-lg shadow-[#15846e]/25 border border-[#15846e]/30';
       break;
     case 'secondary':
       variantClasses = 'bg-white/10 hover:bg-white/15 text-white border border-white/15 backdrop-blur-md';
       break;
     case 'outline':
       variantClasses = isDesigner
-        ? 'border border-violet-500/40 text-violet-300 hover:bg-violet-600/10 hover:border-violet-400'
-        : 'border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600/10 hover:border-emerald-400';
+        ? 'border border-[#8052ff]/40 text-violet-300 hover:bg-[#8052ff]/10 hover:border-[#8052ff]'
+        : 'border border-[#15846e]/40 text-emerald-300 hover:bg-[#15846e]/10 hover:border-[#15846e]';
       break;
     case 'ghost':
-      variantClasses = 'text-slate-300 hover:text-white hover:bg-white/5';
+      variantClasses = 'text-[#9a9a9a] hover:text-white hover:bg-white/5';
       break;
     case 'danger':
       variantClasses = 'bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30';
@@ -56,7 +60,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       disabled={disabled}
-      className={`inline-flex items-center justify-center font-medium font-mono transition-all duration-200 focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:outline-none select-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.98] ${sizeClasses} ${variantClasses} ${
+      className={`inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#8052ff] focus-visible:outline-none select-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.98] ${sizeClasses} ${variantClasses} ${
         fullWidth ? 'w-full' : ''
       } ${className}`}
       {...props}

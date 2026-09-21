@@ -4,69 +4,110 @@
 
 @layer base {
   :root {
-    /* Cosmic Palette Tokens */
-    --space-bg: #05070d;
-    --space-surface: #0b101c;
-    --space-card: #0f172a;
+    /* Dala Style Reference Tokens */
+    --color-void: #000000;
+    --color-bone-white: #ffffff;
+    --color-ash-gray: #9a9a9a;
+    --color-silver-mist: #bdbdbd;
+    --color-electric-iris: #8052ff;
+    --color-saffron-spark: #ffb829;
+    --color-deep-verdant: #15846e;
+
+    /* Cosmic System Base */
+    --space-bg: #000000;
+    --space-surface: #06080f;
+    --space-card: #0b101c;
     --space-border: rgba(255, 255, 255, 0.08);
 
-    /* Designer Perspective: Electric Violet */
-    --designer-accent: 139, 92, 246;
+    /* Designer Perspective: Electric Iris Violet */
+    --designer-accent: 128, 82, 255;
     --designer-secondary: 236, 72, 153;
-    --designer-glow: rgba(139, 92, 246, 0.4);
+    --designer-glow: rgba(128, 82, 255, 0.4);
 
-    /* Engineer Perspective: Emerald / Cyan */
-    --engineer-accent: 16, 185, 129;
+    /* Engineer Perspective: Deep Verdant & Cyan */
+    --engineer-accent: 21, 132, 110;
     --engineer-secondary: 6, 182, 212;
-    --engineer-glow: rgba(16, 185, 129, 0.4);
+    --engineer-glow: rgba(21, 132, 110, 0.4);
   }
 
   body {
-    background-color: var(--space-bg);
-    color: #f1f5f9;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-feature-settings: "ss01" on;
   }
 
   /* Accessible focus indicators */
   :focus-visible {
-    outline: 2px solid #8b5cf6;
+    outline: 2px solid #8052ff;
     outline-offset: 2px;
   }
 }
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #070a12;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
-  border-radius: 4px;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
 
-/* Glassmorphism & Cyber Accents */
+/* Dala Signature Components */
+.btn-electric-pill {
+  background-color: #8052ff;
+  color: #ffffff;
+  border-radius: 9999px;
+  padding: 14.4px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease-out;
+}
+.btn-electric-pill:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 25px -3px rgba(128, 82, 255, 0.5);
+}
+
+.text-dala-display {
+  font-size: clamp(48px, 8vw, 113px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+
+.text-dala-body {
+  font-size: 18px;
+  font-weight: 200;
+  line-height: 1.6;
+  color: #bdbdbd;
+}
+
+/* Glassmorphism & Cyber Accents on Pure Void */
 .glass-panel {
-  background: rgba(11, 16, 28, 0.75);
+  background: rgba(6, 8, 15, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-panel-subtle {
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(11, 16, 28, 0.4);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .glass-pill {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(11, 16, 28, 0.6);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -74,16 +115,16 @@
 .cosmic-grid-pattern {
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
 
 .radial-cosmic-glow {
-  background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.14) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 30%, rgba(128, 82, 255, 0.15) 0%, transparent 65%);
 }
 
 .radial-engineer-glow {
-  background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.14) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 30%, rgba(21, 132, 110, 0.15) 0%, transparent 65%);
 }
 
 /* Accessibility: Reduced Motion */
