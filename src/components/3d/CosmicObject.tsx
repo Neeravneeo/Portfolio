@@ -277,9 +277,32 @@ export const CosmicObject: React.FC = () => {
 
   if (contextError) {
     return (
-      <div className="w-[300px] h-[300px] flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-black text-center p-6 font-mono text-xs text-slate-400">
-        <span className="text-violet-400 mb-2">NEURAL CONSTELLATION</span>
-        <p>Hardware graphics fallback active.</p>
+      <div className="w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-black/80 backdrop-blur-xl relative overflow-hidden group">
+        <svg className="w-4/5 h-4/5 animate-spin-slow opacity-80" viewBox="0 0 200 200">
+          <defs>
+            <radialGradient id="fallbackGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#8052ff" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <circle cx="100" cy="100" r="90" fill="url(#fallbackGlow)" />
+          {/* Constellation Nodes */}
+          <line x1="60" y1="80" x2="100" y2="50" stroke="#8052ff" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
+          <line x1="100" y1="50" x2="140" y2="80" stroke="#ffb829" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
+          <line x1="140" y1="80" x2="130" y2="130" stroke="#15846e" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
+          <line x1="130" y1="130" x2="70" y2="130" stroke="#8052ff" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
+          <line x1="70" y1="130" x2="60" y2="80" stroke="#ffb829" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
+          <line x1="100" y1="50" x2="100" y2="110" stroke="#ffffff" strokeWidth="0.6" opacity="0.4" />
+          <polygon points="60,76 64,84 56,84" fill="#8052ff" />
+          <polygon points="100,46 104,54 96,54" fill="#ffb829" />
+          <polygon points="140,76 144,84 136,84" fill="#15846e" />
+          <polygon points="130,126 134,134 126,134" fill="#8052ff" />
+          <polygon points="70,126 74,134 66,134" fill="#ffb829" />
+          <polygon points="100,106 104,114 96,114" fill="#ffffff" />
+        </svg>
+        <div className="absolute bottom-4 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono tracking-widest text-[#9a9a9a] uppercase">
+          Neural Constellation • 2D Mode
+        </div>
       </div>
     );
   }
