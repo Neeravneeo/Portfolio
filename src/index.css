@@ -5,15 +5,25 @@
 @theme {
   /* Colors */
   --color-void: #000000;
+  --color-obsidian: #0a0a0a;
+  --color-surface-card: #111111;
+  --color-surface-nested: #161616;
+  --color-border-subtle: #222222;
   --color-bone-white: #ffffff;
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #a1a1aa;
+  --color-text-tertiary: #71717a;
   --color-ash-gray: #9a9a9a;
   --color-silver-mist: #bdbdbd;
   --color-electric-iris: #8052ff;
   --color-saffron-spark: #ffb829;
+  --color-amber-accent: #f59e0b;
+  --color-cyan-accent: #06b6d4;
   --color-deep-verdant: #15846e;
 
   /* Typography */
   --font-ppneuemontreal: 'PPNeueMontreal', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-editorial: 'Newsreader', 'Playfair Display', Georgia, serif;
 
   /* Typography — Scale */
   --text-caption: 12px;
@@ -182,6 +192,21 @@
 
 .radial-engineer-glow {
   background: radial-gradient(circle at 50% 30%, rgba(21, 132, 110, 0.15) 0%, transparent 65%);
+}
+
+.font-editorial {
+  font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+}
+
+.tracking-tight-editorial {
+  letter-spacing: -0.03em;
+}
+
+.editorial-headline {
+  font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  line-height: 1.05;
 }
 
 /* Accessibility: Reduced Motion */

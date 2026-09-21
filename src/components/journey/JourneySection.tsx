@@ -1,178 +1,131 @@
 import React, { useState } from 'react';
 import { journeyMilestones } from '../../data/journeyData';
 import { usePerspective } from '../../context/PerspectiveContext';
-import { Sparkles, Milestone, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export const JourneySection: React.FC = () => {
   const { isDesigner } = usePerspective();
-  const [selectedYear, setSelectedYear] = useState<string>('2025');
-
-  const activeMilestone =
-    journeyMilestones.find((m) => m.year === selectedYear) || journeyMilestones[journeyMilestones.length - 1];
+  const [activeYear, setActiveYear] = useState<string>('2025');
 
   return (
-    <section id="journey" className="relative py-28 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto space-y-12">
-      {/* Section Header */}
-      <div className="flex flex-col items-center text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-[#9a9a9a]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#ffb829] shadow-[0_0_6px_#ffb829] animate-pulse" />
-          <span>03. BUILDER EVOLUTION</span>
-          <span>•</span>
-          <span className="text-[#bdbdbd]">CHRONOLOGICAL MATRIX</span>
+    <section id="journey" className="relative py-32 px-6 sm:px-10 lg:px-16 max-w-5xl mx-auto space-y-20">
+      {/* Editorial Section Header */}
+      <div className="space-y-4 max-w-2xl">
+        <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#f59e0b]">
+          <span className="w-2 h-2 rounded-full bg-[#f59e0b] shadow-[0_0_8px_#f59e0b] animate-pulse" />
+          <span>EVOLUTION TIMELINE</span>
         </div>
 
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-0.035em] leading-[1.08]">
-          My Journey Through Cyberspace
+        <h2 className="font-editorial text-4xl sm:text-5xl lg:text-[54px] font-normal text-[#fafafa] tracking-tight leading-[1.08]">
+          MY JOURNEY THROUGH CYBERSPACE
         </h2>
 
-        <p className="text-[#bdbdbd] font-extralight text-lg sm:text-xl leading-[1.65] max-w-2xl">
-          Not a static resume timeline. This is my <span className="font-normal text-white">evolution as a builder</span>—how
+        <p className="text-base sm:text-lg text-[#a1a1aa] font-normal leading-[1.7]">
+          Not a static resume timeline. This is my <strong className="text-[#fafafa] font-medium">evolution as a builder</strong>—how
           foundations in design and engineering catalyzed into autonomous, human-centered intelligent systems.
         </p>
       </div>
 
-      {/* COSMIC ORBITAL TIMELINE TRACK */}
-      <div className="relative py-6">
-        <div className="rounded-3xl p-6 sm:p-8 border border-white/10 bg-white/[0.02] backdrop-blur-xl shadow-2xl overflow-x-auto">
-          {/* Orbital timeline axis */}
-          <div className="relative flex items-center justify-between min-w-[760px] px-4">
-            {/* Background connecting beam */}
-            <div className="absolute top-5 left-8 right-8 h-1 bg-gradient-to-r from-[#8052ff]/30 via-[#15846e]/30 to-[#ffb829]/30 -z-0 rounded-full" />
+      {/* Vertical Editorial Timeline */}
+      <div className="relative pl-6 sm:pl-10 space-y-16 border-l border-[#22222a]">
+        {journeyMilestones.map((m) => {
+          const isActive = m.year === activeYear;
+          return (
+            <div
+              key={m.year}
+              onClick={() => setActiveYear(m.year)}
+              className="relative group cursor-pointer"
+            >
+              {/* Glowing Node on Timeline Line */}
+              <div
+                className={`absolute -left-[31px] sm:-left-[47px] top-1.5 w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+                  isActive
+                    ? 'bg-[#f59e0b] border-[#f59e0b] shadow-[0_0_20px_rgba(245,158,11,0.6)] scale-125'
+                    : 'bg-[#111111] border-[#222222] group-hover:border-[#f59e0b]/50'
+                }`}
+              />
 
-            {journeyMilestones.map((m) => {
-              const isSelected = m.year === selectedYear;
-              return (
-                <button
-                  key={m.year}
-                  onClick={() => setSelectedYear(m.year)}
-                  className="relative z-10 flex flex-col items-center group cursor-pointer focus:outline-none"
-                >
-                  {/* Cosmic Orbital Node */}
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-xs transition-all duration-300 border ${
-                      isSelected
-                        ? isDesigner
-                          ? 'bg-[#8052ff] text-white border-[#8052ff] shadow-lg shadow-[#8052ff]/40 scale-125'
-                          : 'bg-[#15846e] text-white border-[#15846e] shadow-lg shadow-[#15846e]/40 scale-125'
-                        : 'bg-black text-[#9a9a9a] border-white/15 hover:border-white/40 hover:text-white'
-                    }`}
-                  >
-                    {m.year === '2026' ? 'NOW' : m.year}
+              {/* Entry Content Card */}
+              <div
+                className={`p-6 sm:p-8 rounded-2xl border transition-all duration-300 space-y-5 ${
+                  isActive
+                    ? 'bg-[#141414] border-[#383838] shadow-2xl shadow-black/80'
+                    : 'bg-[#111111]/80 border-[#222222] hover:border-[#303030]'
+                }`}
+              >
+                {/* Year Header & Theme */}
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono font-semibold px-3 py-1 rounded-full bg-[#1a1a1a] text-[#f59e0b] border border-white/5">
+                      {m.year === '2026' ? '2026 NOW' : m.year}
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-sans font-semibold text-[#fafafa]">
+                      {m.title}
+                    </h3>
                   </div>
 
-                  {/* Year & Theme Sub-labels */}
-                  <div className="mt-3 text-center">
-                    <span
-                      className={`text-xs font-mono font-medium block transition-colors ${
-                        isSelected ? 'text-white' : 'text-[#9a9a9a] group-hover:text-white'
-                      }`}
-                    >
-                      {m.year}
-                    </span>
-                    <span
-                      className={`text-[11px] font-mono tracking-wider uppercase block mt-0.5 ${
-                        isSelected
-                          ? isDesigner ? 'text-[#8052ff]' : 'text-[#15846e]'
-                          : 'text-[#9a9a9a]'
-                      }`}
-                    >
-                      {m.theme}
-                    </span>
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#71717a]">
+                    CHAPTER: {m.theme}
+                  </span>
+                </div>
+
+                {/* Subtitle / Key Artifact */}
+                <div className="flex items-center gap-2 text-xs font-mono text-[#a1a1aa]">
+                  <span>KEY ARTIFACT:</span>
+                  <span className="text-[#fafafa]">{m.keyArtifact}</span>
+                  {m.stats && (
+                    <>
+                      <span>•</span>
+                      <span className="text-[#71717a]">{m.stats}</span>
+                    </>
+                  )}
+                </div>
+
+                {/* Two-Column Deep Dive: What I Mastered & What I Built */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                  {/* Column 1: What I Mastered */}
+                  <div className="space-y-2.5">
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-[#f59e0b] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>WHAT I MASTERED & DISCOVERED</span>
+                    </h4>
+                    <ul className="space-y-1.5 text-xs sm:text-sm text-[#71717a] leading-relaxed">
+                      {m.learned.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-[#f59e0b] mt-1">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
 
-      {/* EXPANDED YEAR CARD */}
-      <div className="rounded-3xl border border-white/10 p-6 sm:p-10 bg-white/[0.02] backdrop-blur-xl shadow-2xl relative overflow-hidden animate-fadeIn">
-        {/* Ambient background accent aura */}
-        <div
-          className={`absolute -top-32 -right-32 w-80 h-80 rounded-full filter blur-[120px] opacity-20 pointer-events-none ${
-            isDesigner ? 'bg-[#8052ff]' : 'bg-[#15846e]'
-          }`}
-        />
+                  {/* Column 2: What I Built */}
+                  <div className="space-y-2.5">
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-[#06b6d4] flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>WHAT I BUILT & ARCHITECTED</span>
+                    </h4>
+                    <ul className="space-y-1.5 text-xs sm:text-sm text-[#71717a] leading-relaxed">
+                      {m.built.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-[#06b6d4] mt-1">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
 
-        <div className="space-y-8 relative z-10">
-          {/* Header info */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
-            <div>
-              <div className="flex items-center gap-2 text-xs font-mono">
-                <span
-                  className={`px-3 py-1 rounded-full border ${
-                    isDesigner
-                      ? 'bg-[#8052ff]/15 text-[#8052ff] border-[#8052ff]/30'
-                      : 'bg-[#15846e]/15 text-[#15846e] border-[#15846e]/30'
-                  }`}
-                >
-                  CHAPTER: {activeMilestone.year} • {activeMilestone.theme.toUpperCase()}
-                </span>
-                {activeMilestone.stats && (
-                  <span className="text-[#9a9a9a]">{activeMilestone.stats}</span>
-                )}
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-normal text-white mt-2 tracking-tight">
-                {activeMilestone.title}
-              </h3>
-            </div>
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 text-xs font-mono text-[#bdbdbd] shrink-0">
-              <span className="text-[#9a9a9a] block text-[10px]">KEY ARTIFACT:</span>
-              <span className="font-medium text-white mt-0.5 block">{activeMilestone.keyArtifact}</span>
-            </div>
-          </div>
-
-          {/* Tri-Column Deep Dive: What I Learned, What I Built, What Changed */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* What I learned */}
-            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-              <span className="text-xs font-mono text-[#ffb829] font-medium block">
-                WHAT I MASTERED & DISCOVERED
-              </span>
-              <ul className="space-y-2 text-xs text-[#bdbdbd] font-extralight leading-relaxed">
-                {(activeMilestone.learned ?? []).map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#ffb829] mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* What I built */}
-            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-              <span className="text-xs font-mono text-[#8052ff] font-medium block">
-                WHAT I SHIPPED & ARCHITECTED
-              </span>
-              <ul className="space-y-2 text-xs text-[#bdbdbd] font-extralight leading-relaxed">
-                {(activeMilestone.built ?? []).map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#8052ff] mt-0.5">✓</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* What changed */}
-            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3 flex flex-col justify-between">
-              <div>
-                <span className="text-xs font-mono text-[#15846e] font-medium block">
-                  THE MENTAL SHIFT
-                </span>
-                <p className="text-sm text-white font-extralight italic mt-3 leading-relaxed">
-                  "{activeMilestone.changed}"
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-white/5 text-[11px] font-mono text-[#9a9a9a] flex items-center justify-between">
-                <span>Evolutionary Vector</span>
-                <span className="text-[#15846e]">Continuous Mastery</span>
+                {/* Editorial Quote: Paradigm Shift */}
+                <div className="pt-3 border-t border-[#222222]">
+                  <blockquote className="font-editorial text-base sm:text-lg italic text-[#fafafa] border-l-2 border-[#f59e0b] pl-4 py-0.5 leading-snug">
+                    "{m.changed}"
+                  </blockquote>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </section>
   );

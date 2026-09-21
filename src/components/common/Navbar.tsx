@@ -40,62 +40,39 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onOpe
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-space-950/85 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/40 py-3'
-          : 'bg-transparent py-5'
+          ? 'bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-[#222222] shadow-2xl shadow-black/80 py-3.5'
+          : 'bg-transparent py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo / OS Identity */}
+          {/* Logo / Editorial Brand Identity */}
           <button
             onClick={() => handleNavClick('home')}
-            className="flex items-center gap-2.5 group text-left"
+            className="flex items-center gap-3 group text-left cursor-pointer focus:outline-none"
           >
-            <div
-              className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-transform duration-300 group-hover:scale-110 shadow-sm ${
-                isDesigner
-                  ? 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white shadow-violet-500/30'
-                  : 'bg-gradient-to-br from-emerald-600 to-teal-600 text-white shadow-emerald-500/30'
-              }`}
-            >
-              N
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-mono font-bold text-sm tracking-wider text-slate-100 group-hover:text-white">
-                  NEERAV.OS
-                </span>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              </div>
-              <span className="text-[10px] font-mono text-slate-400 tracking-tight">
-                {isDesigner ? 'HUMAN CRAFT MODE' : 'SYSTEM KERNEL MODE'}
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-sm tracking-[0.2em] font-medium text-[#fafafa] group-hover:text-white transition-colors">
+                NEERAV
               </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] animate-pulse" />
             </div>
           </button>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-black/60 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
+          <nav className="hidden md:flex items-center gap-1 bg-[#111111]/80 p-1.5 rounded-full border border-[#222222] backdrop-blur-md">
             {navItems.map((item) => {
               const isActive = activeSection === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`relative px-4 py-1.5 rounded-full text-[13px] uppercase tracking-[0.025em] font-medium transition-all duration-200 ${
+                  className={`relative px-4 py-1.5 rounded-full text-[13px] font-sans transition-all duration-200 ${
                     isActive
-                      ? 'text-white'
-                      : 'text-[#9a9a9a] hover:text-white hover:bg-white/5'
+                      ? 'text-[#0a0a0a] font-medium bg-[#fafafa]'
+                      : 'text-[#a1a1aa] hover:text-[#fafafa] hover:bg-white/[0.04]'
                   }`}
                 >
-                  {isActive && (
-                    <span
-                      className={`absolute inset-0 rounded-full transition-colors duration-300 -z-10 ${
-                        isDesigner
-                          ? 'bg-[#8052ff] shadow-sm shadow-[#8052ff]/30'
-                          : 'bg-[#15846e] shadow-sm shadow-[#15846e]/30'
-                      }`}
-                    />
-                  )}
                   {item.label}
                 </button>
               );
@@ -109,9 +86,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onOpe
             {onOpenResume && (
               <button
                 onClick={onOpenResume}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-200"
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-mono text-[#fafafa] hover:text-white bg-[#111111] hover:bg-[#161616] border border-[#222222] hover:border-[#333333] transition-all duration-200"
               >
-                <FileText className="w-3.5 h-3.5" />
+                <FileText className="w-3.5 h-3.5 text-[#f59e0b]" />
                 <span>Resume</span>
               </button>
             )}

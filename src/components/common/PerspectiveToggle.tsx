@@ -10,14 +10,14 @@ export const PerspectiveToggle: React.FC = () => {
     <div
       role="radiogroup"
       aria-label="Perspective View Mode"
-      className="relative inline-flex items-center p-1 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-md shadow-inner"
+      className="relative inline-flex items-center p-1 rounded-full bg-[#111111] border border-[#222222] backdrop-blur-md"
     >
       {/* Sliding indicator pill */}
       <div
-        className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-full transition-all duration-300 ease-out shadow-md ${
+        className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-full transition-all duration-300 ease-out shadow-sm ${
           isDesigner
-            ? 'left-1 bg-gradient-to-r from-violet-600 to-fuchsia-600 shadow-violet-500/30'
-            : 'left-[calc(50%+2px)] bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/30'
+            ? 'left-1 bg-[#f59e0b] shadow-[#f59e0b]/30'
+            : 'left-[calc(50%+2px)] bg-[#06b6d4] shadow-[#06b6d4]/30'
         }`}
       />
 
@@ -32,8 +32,8 @@ export const PerspectiveToggle: React.FC = () => {
             trackEvent('designer_engineer_switch', { perspective: 'designer' });
           }
         }}
-        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:outline-none ${
-          isDesigner ? 'text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
+        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-colors duration-200 focus-visible:outline-none ${
+          isDesigner ? 'text-[#0a0a0a] font-semibold' : 'text-[#71717a] hover:text-[#fafafa]'
         }`}
       >
         <Palette className="w-3.5 h-3.5" />
@@ -51,8 +51,8 @@ export const PerspectiveToggle: React.FC = () => {
             trackEvent('designer_engineer_switch', { perspective: 'engineer' });
           }
         }}
-        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none ${
-          !isDesigner ? 'text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
+        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-colors duration-200 focus-visible:outline-none ${
+          !isDesigner ? 'text-[#0a0a0a] font-semibold' : 'text-[#71717a] hover:text-[#fafafa]'
         }`}
       >
         <Terminal className="w-3.5 h-3.5" />

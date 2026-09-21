@@ -156,41 +156,32 @@ export const LabSection: React.FC = () => {
       : labExperiments.filter((exp) => exp.category === selectedCategory);
 
   return (
-    <section id="lab" className="relative py-28 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto space-y-12">
+    <section id="lab" className="relative py-32 px-6 sm:px-10 lg:px-16 max-w-7xl mx-auto space-y-16">
       {/* Section Header */}
-      <div className="flex flex-col items-center text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-[#9a9a9a]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#ffb829] shadow-[0_0_6px_#ffb829] animate-pulse" />
-          <span>04. EXPERIMENTAL PLAYGROUND</span>
-          <span>•</span>
-          <span className="text-[#bdbdbd]">INTERACTIVE WIDGETS</span>
-        </div>
-
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-0.035em] leading-[1.08]">
-          The Lab
+      <div className="flex flex-col items-center text-center space-y-4 max-w-2xl mx-auto">
+        <h2 className="font-editorial text-4xl sm:text-5xl lg:text-[54px] font-normal text-[#fafafa] tracking-tight">
+          THE LAB
         </h2>
 
-        <div className="font-mono text-xs sm:text-sm tracking-widest text-[#9a9a9a] uppercase">
-          Build • Test • Break • Learn • Repeat
+        <div className="font-mono text-xs tracking-[0.15em] text-[#06b6d4] uppercase">
+          BUILD → TEST → BREAK → LEARN → REPEAT
         </div>
 
-        <p className="text-[#bdbdbd] font-extralight text-lg sm:text-xl leading-[1.65] max-w-2xl">
+        <p className="text-base text-[#a1a1aa] font-normal leading-[1.7]">
           Kinetic physics widgets, ML classifiers, telemetry dispatchers, and micro-interactions.
           Nothing is hidden; every experiment is live, inspectable, and tactile.
         </p>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-3">
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-mono transition-all border ${
+              className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all border cursor-pointer ${
                 selectedCategory === cat
-                  ? isDesigner
-                    ? 'bg-[#8052ff] text-white border-[#8052ff] shadow-lg shadow-[#8052ff]/25'
-                    : 'bg-[#15846e] text-white border-[#15846e] shadow-lg shadow-[#15846e]/25'
-                  : 'bg-white/[0.03] text-[#9a9a9a] border-white/10 hover:text-white hover:border-white/20'
+                  ? 'bg-[#fafafa] text-[#0a0a0a] border-[#fafafa] font-medium'
+                  : 'bg-[#111111] text-[#a1a1aa] border-[#222222] hover:text-[#fafafa] hover:border-[#383838]'
               }`}
             >
               {cat}
@@ -199,21 +190,21 @@ export const LabSection: React.FC = () => {
         </div>
       </div>
 
-      {/* EXPERIMENTS GRID */}
+      {/* EXPERIMENTS GRID (2-Column Editorial Grid) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* EXP 1: UX Cognitive Load Scanner */}
-        <div className="rounded-3xl border border-white/10 p-6 sm:p-7 bg-white/[0.02] backdrop-blur-xl shadow-xl space-y-5">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+        <div className="rounded-2xl border border-[#222222] p-8 bg-[#111111] space-y-5 hover:border-[#383838] transition-colors">
+          <div className="flex items-center justify-between border-b border-[#222222] pb-3">
             <div>
-              <span className="text-[10px] font-mono text-[#8052ff] uppercase font-bold tracking-wider">UX RESEARCH • LIVE HEURISTIC SCANNER</span>
-              <h3 className="text-lg font-normal text-white">Cognitive Load & Fitts' Law Calculator</h3>
+              <span className="text-[10px] font-mono text-[#06b6d4] uppercase font-bold tracking-wider">UX RESEARCH • LIVE HEURISTIC SCANNER</span>
+              <h3 className="text-lg font-semibold text-[#fafafa]">Cognitive Load & Fitts' Law Calculator</h3>
             </div>
-            <span className="px-2.5 py-1 rounded-full bg-[#8052ff]/15 text-[#8052ff] border border-[#8052ff]/30 text-xs font-mono">
+            <span className="px-2.5 py-1 rounded-full bg-[#06b6d4]/10 text-[#06b6d4] text-xs font-mono">
               INTERACTIVE
             </span>
           </div>
 
-          <p className="text-xs text-[#bdbdbd] font-extralight">
+          <p className="text-xs text-[#71717a] leading-relaxed">
             Adjust target size and contrast ratio to calculate accessibility ergonomics in real time.
           </p>
 

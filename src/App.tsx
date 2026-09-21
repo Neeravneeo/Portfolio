@@ -78,7 +78,7 @@ export const AppContent: React.FC = () => {
     : null;
 
   return (
-    <div className="relative min-h-screen selection:bg-[#8052ff]/30 selection:text-white bg-black text-white font-sans">
+    <div className="relative min-h-screen selection:bg-[#f59e0b]/30 selection:text-white bg-[#0a0a0a] text-[#fafafa] font-sans">
       {/* Background Interactive Cosmic Canvas */}
       <CosmicBackground />
 
