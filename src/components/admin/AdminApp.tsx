@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { authService, AdminSession } from '../../lib/auth';
 import { AdminLogin } from './AdminLogin';
 import { AdminDashboard } from './AdminDashboard';
+import { AdminProjects } from './AdminProjects';
+import { AdminStorage } from './AdminStorage';
+import { AdminMessages } from './AdminMessages';
+import { AdminContentSettings } from './AdminContentSettings';
+import { AdminAuditLog } from './AdminAuditLog';
+import { AdminIntegrations } from './AdminIntegrations';
 import {
   ArrowLeft,
   LogOut,
@@ -12,81 +18,88 @@ import {
   BarChart3,
   HardDrive,
   Settings,
-  RefreshCw,
+  Activity,
+  Network,
 } from 'lucide-react';
-import { Button } from '../common/Button';
 
 interface AdminAppProps {
   onBackToPublic: () => void;
+  onPreviewProject?: (projectId: string) => void;
 }
 
-interface StoredMessage {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
-  timestamp: string;
-  isRead: boolean;
-}
+export type AdminTab =
+  | 'dashboard'
+  | 'projects'
+  | 'storage'
+  | 'messages'
+  | 'content'
+  | 'audit'
+  | 'integrations';
 
-export const AdminApp: React.FC<AdminAppProps> = ({ onBackToPublic }) => {
+export const AdminApp: React.FC<AdminAppProps> = ({ onBackToPublic, onPreviewProject }) => {
   const [session, setSession] = useState<AdminSession | null>(authService.getSession);
-  const [messages, setMessages] = useState<StoredMessage[]>([]);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'messages' | 'projects' | 'storage'>('dashboard');
+  const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
+  const [inboundCount, setInboundCount] = useState<number>(0);
 
   useEffect(() => {
-    if (session) {
-      loadMessages();
-    }
-  }, [session]);
-
-  const loadMessages = () => {
     try {
-      const raw = localStorage.getItem('portfolio_messages_v1');
-      if (raw) {
-        setMessages(JSON.parse(raw));
+      const stored = localStorage.getItem('portfolio_messages_v1');
+      if (stored) {
+        const msgs = JSON.parse(stored);
+        setInboundCount(msgs.length);
       }
-    } catch (err) {
-      console.error('Failed to read messages', err);
+    } catch {
+      // ignore
     }
-  };
+  }, [activeTab]);
 
   const handleLogout = () => {
     authService.logout();
     setSession(null);
   };
 
-  // If unauthenticated, display secure login gate
+  // If not authenticated, enforce login gate
   if (!session) {
     return (
       <AdminLogin
-        onLoginSuccess={(newSession) => setSession(newSession)}
+        onLoginSuccess={(newSession: AdminSession) => setSession(newSession)}
         onBackToPublic={onBackToPublic}
       />
     );
   }
 
-  return (
-    <div className="min-h-screen bg-black text-white flex flex-col justify-between p-6 sm:p-10 font-mono relative overflow-hidden select-none">
-      {/* Background ambient security beacon */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#8052ff]/10 blur-[180px] pointer-events-none" />
+  const tabs: { id: AdminTab; label: string; icon: React.FC<{ className?: string }> }[] = [
+    { id: 'dashboard', label: 'Dashboard & Telemetry', icon: BarChart3 },
+    { id: 'projects', label: 'Projects & Case Studies', icon: Layers },
+    { id: 'storage', label: 'Cloudflare R2 Storage', icon: HardDrive },
+    { id: 'messages', label: `Inbound Vault (${inboundCount})`, icon: Mail },
+    { id: 'content', label: 'Timeline & Settings', icon: Settings },
+    { id: 'audit', label: 'Audit Log', icon: Activity },
+    { id: 'integrations', label: 'Notion + n8n Pipeline', icon: Network },
+  ];
 
-      {/* Header bar */}
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 z-10 border-b border-white/10 pb-4">
+  return (
+    <div className="min-h-screen bg-[#000000] text-[#ffffff] flex flex-col justify-between p-4 sm:p-8 font-sans selection:bg-[#8052ff] selection:text-white relative overflow-hidden">
+      {/* Background Subtle Gradient Aura */}
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-[#8052ff]/10 via-[#15846e]/5 to-transparent blur-3xl pointer-events-none" />
+
+      {/* Admin Studio Top Header */}
+      <header className="relative z-10 max-w-7xl w-full mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#8052ff] flex items-center justify-center font-bold text-sm text-white shadow-lg shadow-[#8052ff]/20">
-            N
+          <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#8052ff] to-[#15846e] flex items-center justify-center shadow-lg shadow-[#8052ff]/20">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-sm tracking-wider">NEERAV.OS STUDIO</span>
-              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#15846e]/20 text-[#15846e] border border-[#15846e]/30 font-semibold">
-                OWNER AUTHENTICATED
+              <h1 className="text-sm font-semibold tracking-wider text-white">NEERAV.OS KERNEL</h1>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#15846e]/20 text-[#15846e] border border-[#15846e]/30 flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3" />
+                OWNER SESSION
               </span>
             </div>
-            <span className="text-[10px] text-[#9a9a9a]">
-              Logged in as {session.user.email} • Session Active
-            </span>
+            <p className="text-xs text-[#9a9a9a] font-extralight">
+              Authenticated as <span className="text-[#8052ff] font-mono">{session.user.email}</span>
+            </p>
           </div>
         </div>
 
@@ -110,22 +123,17 @@ export const AdminApp: React.FC<AdminAppProps> = ({ onBackToPublic }) => {
       </header>
 
       {/* Main Admin Studio Navigation & Content */}
-      <main className="relative z-10 max-w-7xl w-full mx-auto my-8 space-y-8 flex-1">
+      <main className="relative z-10 max-w-7xl w-full mx-auto my-6 space-y-6 flex-1">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-white/5">
-          {[
-            { id: 'dashboard', label: 'Dashboard & Telemetry', icon: BarChart3 },
-            { id: 'messages', label: `Inbound Inquiries (${messages.length})`, icon: Mail },
-            { id: 'projects', label: 'Projects & Case Studies', icon: Layers },
-            { id: 'storage', label: 'Cloudflare R2 Storage', icon: HardDrive },
-          ].map((tab) => {
+        <div className="flex items-center gap-2 pb-2 border-b border-white/5 overflow-x-auto">
+          {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono transition-all border ${
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono transition-all border whitespace-nowrap shrink-0 ${
                   isActive
                     ? 'bg-[#8052ff] text-white border-[#8052ff] shadow-lg shadow-[#8052ff]/25'
                     : 'bg-white/[0.02] text-[#9a9a9a] border-white/10 hover:text-white'
@@ -140,122 +148,36 @@ export const AdminApp: React.FC<AdminAppProps> = ({ onBackToPublic }) => {
 
         {/* TAB 1: DASHBOARD & TELEMETRY */}
         {activeTab === 'dashboard' && (
-          <AdminDashboard onNavigateTab={(tab) => setActiveTab(tab)} />
+          <AdminDashboard
+            onNavigateTab={(tab) => setActiveTab(tab as AdminTab)}
+            onOpenProject={onPreviewProject}
+          />
         )}
 
-        {/* TAB 2: INBOUND MESSAGES INBOX */}
-        {activeTab === 'messages' && (
-          <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-4 animate-fadeIn">
-            <div className="flex items-center justify-between pb-4 border-b border-white/10">
-              <div>
-                <h3 className="text-lg font-normal text-white">Inbound Message Vault</h3>
-                <p className="text-xs text-[#bdbdbd] font-extralight">
-                  All messages transmitted through the public Communication Beacon.
-                </p>
-              </div>
-              <button
-                onClick={loadMessages}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-xs text-[#9a9a9a] hover:text-white"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Reload Messages</span>
-              </button>
-            </div>
-
-            {messages.length === 0 ? (
-              <div className="py-12 text-center text-xs text-[#9a9a9a] border border-dashed border-white/10 rounded-2xl">
-                No inbound transmissions logged.
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-2"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-normal text-white">{msg.name}</span>
-                        <a href={`mailto:${msg.email}`} className="text-xs text-[#8052ff] hover:underline">
-                          {msg.email}
-                        </a>
-                      </div>
-                      <span className="text-[11px] text-[#9a9a9a]">
-                        {new Date(msg.timestamp).toLocaleString()}
-                      </span>
-                    </div>
-                    <p className="text-xs text-[#bdbdbd] font-extralight whitespace-pre-wrap leading-relaxed">
-                      {msg.message}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* TAB 3: PROJECTS OVERVIEW */}
+        {/* TAB 2: PROJECTS MANAGEMENT */}
         {activeTab === 'projects' && (
-          <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-normal text-white">Project Case Studies & Simulators</h3>
-            <p className="text-xs text-[#bdbdbd] font-extralight">
-              Status overview of the 6 interactive case studies registered in the core database.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-              {[
-                { name: 'ALZO Healthcare', role: 'Flagship 3-Role Ecosystem', status: 'Live' },
-                { name: 'Peer Club', role: 'CRDT & WebRTC Audio', status: 'Live' },
-                { name: 'GitDrive', role: 'Deduplication Engine', status: 'Live' },
-                { name: 'AI Email Agent', role: 'Autonomous Triaging & HITL', status: 'Live' },
-                { name: 'InnerOS', role: 'Spatial Agent Canvas', status: 'Live' },
-                { name: 'GoBuilder', role: 'Prompt to UI Compiler', status: 'Live' },
-              ].map((p) => (
-                <div key={p.name} className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-normal text-white">{p.name}</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#15846e]/20 text-[#15846e]">
-                      {p.status}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[#9a9a9a] font-extralight">{p.role}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <AdminProjects onPreviewProject={onPreviewProject} />
         )}
 
-        {/* TAB 4: CLOUDFLARE R2 STORAGE */}
-        {activeTab === 'storage' && (
-          <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-normal text-white">Cloudflare R2 Object Storage</h3>
-            <p className="text-xs text-[#bdbdbd] font-extralight">
-              Configured via Cloudflare API token and verified S3 credentials.
-            </p>
-            <div className="p-4 rounded-2xl bg-black border border-white/10 font-mono text-xs space-y-2 text-[#bdbdbd]">
-              <div className="flex justify-between">
-                <span className="text-[#9a9a9a]">Account ID:</span>
-                <span className="text-white">a0b8c6edb1419ee0c4b9c21599c013d4</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#9a9a9a]">R2 Bucket:</span>
-                <span className="text-white">portfolio-assets</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#9a9a9a]">Endpoint:</span>
-                <span className="text-[#8052ff]">https://a0b8c6edb1419ee0c4b9c21599c013d4.r2.cloudflarestorage.com</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#9a9a9a]">Token Status:</span>
-                <span className="text-[#15846e]">Active & Verified</span>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* TAB 3: CLOUDFLARE R2 STORAGE */}
+        {activeTab === 'storage' && <AdminStorage />}
+
+        {/* TAB 4: INBOUND MESSAGES INBOX */}
+        {activeTab === 'messages' && <AdminMessages />}
+
+        {/* TAB 5: TIMELINE, LAB & SYSTEM SETTINGS */}
+        {activeTab === 'content' && <AdminContentSettings />}
+
+        {/* TAB 6: AUDIT LOG */}
+        {activeTab === 'audit' && <AdminAuditLog />}
+
+        {/* TAB 7: NOTION + N8N INTEGRATIONS */}
+        {activeTab === 'integrations' && <AdminIntegrations />}
       </main>
 
       {/* Footer bar */}
       <footer className="z-10 text-center text-[10px] text-[#9a9a9a] border-t border-white/5 pt-4">
-        NEERAV.OS KERNEL • OWNER AUTHENTICATED STUDIO • CONFIDENTIAL
+        NEERAV.OS KERNEL • OWNER AUTHENTICATED STUDIO • SECURE LOCAL / CLOUDFLARE INTEGRATION
       </footer>
     </div>
   );
