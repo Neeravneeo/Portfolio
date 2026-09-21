@@ -195,21 +195,21 @@ export const InnerOSExperience: React.FC<InnerOSExperienceProps> = ({ project, o
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-3">
-            <span className="text-xs font-mono text-purple-400">THE POST-GUI PARADIGM</span>
-            <p className="text-sm text-slate-300 leading-relaxed">{project.designer.problem}</p>
-            <ul className="space-y-1.5 text-xs text-slate-400">
-              {project.designer.researchInsights.map((r, i) => (
+          <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+            <span className="text-xs font-mono text-[#8052ff]">THE POST-GUI PARADIGM</span>
+            <p className="text-sm text-[#bdbdbd] font-extralight leading-relaxed">{project.designer?.problem}</p>
+            <ul className="space-y-1.5 text-xs text-[#9a9a9a] font-extralight">
+              {(project.designer?.researchInsights ?? []).map((r, i) => (
                 <li key={i}>• {r}</li>
               ))}
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl glass-panel border border-purple-500/20 space-y-3">
-            <span className="text-xs font-mono text-purple-400">LOCAL WEBGPU RUNTIME</span>
-            <p className="text-sm text-slate-300 leading-relaxed">{project.engineer.architectureSummary}</p>
-            <ul className="space-y-1.5 text-xs text-slate-300">
-              {project.engineer.performanceGains.map((p, i) => (
+          <div className="p-6 rounded-2xl bg-white/[0.02] border border-[#8052ff]/30 space-y-3">
+            <span className="text-xs font-mono text-[#8052ff]">LOCAL WEBGPU RUNTIME</span>
+            <p className="text-sm text-[#bdbdbd] font-extralight leading-relaxed">{project.engineer?.architectureSummary}</p>
+            <ul className="space-y-1.5 text-xs text-[#bdbdbd] font-extralight">
+              {(project.engineer?.performanceGains ?? []).map((p, i) => (
                 <li key={i}>✓ {p}</li>
               ))}
             </ul>

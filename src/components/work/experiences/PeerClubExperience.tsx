@@ -451,49 +451,49 @@ export const PeerClubExperience: React.FC<PeerClubExperienceProps> = ({ project,
 
         {caseStudyPerspective === 'designer' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-3">
-              <span className="text-xs font-mono text-cyan-400">DESIGNING FOR SOCIAL FLOW</span>
-              <p className="text-sm text-slate-300 leading-relaxed">{project.designer.problem}</p>
-              <ul className="space-y-1.5 text-xs text-slate-400">
-                {project.designer.researchInsights.map((r, i) => (
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+              <span className="text-xs font-mono text-[#8052ff]">DESIGNING FOR SOCIAL FLOW</span>
+              <p className="text-sm text-[#bdbdbd] font-extralight leading-relaxed">{project.designer?.problem}</p>
+              <ul className="space-y-1.5 text-xs text-[#9a9a9a] font-extralight">
+                {(project.designer?.researchInsights ?? []).map((r, i) => (
                   <li key={i}>• {r}</li>
                 ))}
               </ul>
             </div>
-            <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-3">
-              <span className="text-xs font-mono text-cyan-400">DESIGN SYSTEM HIGHLIGHTS</span>
-              <ul className="space-y-2 text-xs text-slate-300">
-                {project.designer.designSystemHighlights.map((d, i) => (
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+              <span className="text-xs font-mono text-[#8052ff]">DESIGN SYSTEM HIGHLIGHTS</span>
+              <ul className="space-y-2 text-xs text-[#bdbdbd] font-extralight">
+                {(project.designer?.designSystemHighlights ?? []).map((d, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-cyan-400">✓</span>
+                    <span className="text-[#8052ff]">✓</span>
                     <span>{d}</span>
                   </li>
                 ))}
               </ul>
-              <div className="p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/20 text-xs font-mono text-cyan-200">
-                {project.designer.outcome}
+              <div className="p-3 rounded-xl bg-[#8052ff]/10 border border-[#8052ff]/20 text-xs font-mono text-[#8052ff]">
+                {project.designer?.outcome}
               </div>
             </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl glass-panel border border-emerald-500/20 space-y-3">
-              <span className="text-xs font-mono text-emerald-400">CRDT & WEBRTC PIPELINE</span>
-              <p className="text-sm text-slate-300 leading-relaxed">{project.engineer.architectureSummary}</p>
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-[#15846e]/30 space-y-3">
+              <span className="text-xs font-mono text-[#15846e]">CRDT & WEBRTC PIPELINE</span>
+              <p className="text-sm text-[#bdbdbd] font-extralight leading-relaxed">{project.engineer?.architectureSummary}</p>
               <div className="flex flex-wrap gap-1.5 pt-2">
-                {project.engineer.techStack.map((t) => (
-                  <span key={t} className="px-2.5 py-1 rounded bg-emerald-950/40 text-emerald-300 text-xs font-mono border border-emerald-500/20">
+                {(project.engineer?.techStack ?? []).map((t) => (
+                  <span key={t} className="px-2.5 py-1 rounded-full bg-[#15846e]/10 text-[#15846e] text-xs font-mono border border-[#15846e]/25">
                     {t}
                   </span>
                 ))}
               </div>
             </div>
-            <div className="p-6 rounded-2xl glass-panel border border-emerald-500/20 space-y-3">
-              <span className="text-xs font-mono text-emerald-400">PERFORMANCE & RUNTIME</span>
-              <ul className="space-y-2 text-xs text-slate-300">
-                {project.engineer.performanceGains.map((p, i) => (
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-[#15846e]/30 space-y-3">
+              <span className="text-xs font-mono text-[#15846e]">PERFORMANCE & RUNTIME</span>
+              <ul className="space-y-2 text-xs text-[#bdbdbd] font-extralight">
+                {(project.engineer?.performanceGains ?? []).map((p, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-emerald-400">✓</span>
+                    <span className="text-[#15846e]">✓</span>
                     <span>{p}</span>
                   </li>
                 ))}

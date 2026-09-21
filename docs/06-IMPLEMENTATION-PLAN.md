@@ -69,15 +69,15 @@ Version: 1.1
 - [x] Critical engineering challenges & benchmark validations.
 - [x] Resilience Audit Fix 4 applied across all lens fields.
 
-### Phase 7 — Other Projects (Next)
+### Phase 7 — Other Projects ✅ (Completed)
+- [x] Peer Club: Real-time collaborative learning interactive simulator (`PeerClubExperience.tsx`) with CRDT state and WebRTC audio visualizer.
+- [x] GitDrive: Chunked deduplication pipeline & visual commit DAG explorer (`GitDriveExperience.tsx`).
+- [x] AI Email Agent: Autonomous triaging & human-in-the-loop multi-step approval workflow (`EmailAgentExperience.tsx`).
+- [x] InnerOS: Spatial OS contextual workspace simulator with WebGPU agent node graph (`InnerOSExperience.tsx`).
+- [x] GoBuilder: Real-time natural language to UI compiler with copyable Tailwind/React output (`GoBuilderExperience.tsx`).
+- [x] Resilience Audit Fix 4 applied defensively across all experience lens mappings.
 
-### Phase 7 — Other Projects
-- Peer Club.
-- GitDrive.
-- AI Email Agent.
-- InnerOS.
-- GoBuilder.
-- *Each gets an interaction model based on the product concept.*
+### Phase 8 — Journey and Lab (Next)
 
 ### Phase 8 — Journey and Lab
 - Orbital timeline.
