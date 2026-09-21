@@ -21,18 +21,27 @@ import { GitDriveExperience } from './components/work/experiences/GitDriveExperi
 import { EmailAgentExperience } from './components/work/experiences/EmailAgentExperience';
 import { InnerOSExperience } from './components/work/experiences/InnerOSExperience';
 import { GoBuilderExperience } from './components/work/experiences/GoBuilderExperience';
+import { trackEvent } from './lib/telemetry';
 
 export const AppContent: React.FC = () => {
   const router = useRouter();
   const [activeSection, setActiveSection] = useState<string>(router.currentRoute);
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
 
-  // Sync route changes to active section
+  // Sync route changes to active section and track page view
   useEffect(() => {
     if (!router.isAdmin) {
       setActiveSection(router.currentRoute);
+      trackEvent('page_view', { route: router.currentRoute });
     }
   }, [router.currentRoute, router.isAdmin]);
+
+  // Track project experience opening
+  useEffect(() => {
+    if (router.activeExperienceId) {
+      trackEvent('project_open', { projectId: router.activeExperienceId });
+    }
+  }, [router.activeExperienceId]);
 
   // Monitor active scroll section in public view
   useEffect(() => {

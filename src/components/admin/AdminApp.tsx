@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authService, AdminSession } from '../../lib/auth';
 import { AdminLogin } from './AdminLogin';
+import { AdminDashboard } from './AdminDashboard';
 import {
   ArrowLeft,
   LogOut,
@@ -137,78 +138,9 @@ export const AdminApp: React.FC<AdminAppProps> = ({ onBackToPublic }) => {
           })}
         </div>
 
-        {/* TAB 1: DASHBOARD */}
+        {/* TAB 1: DASHBOARD & TELEMETRY */}
         {activeTab === 'dashboard' && (
-          <div className="space-y-6 animate-fadeIn">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-5 rounded-3xl bg-white/[0.02] border border-white/10 space-y-2">
-                <span className="text-[10px] text-[#9a9a9a] uppercase tracking-wider">TOTAL INBOUND MESSAGES</span>
-                <p className="text-2xl font-normal text-white">{messages.length}</p>
-                <span className="text-[11px] text-[#15846e]">Real-time message bus synced</span>
-              </div>
-
-              <div className="p-5 rounded-3xl bg-white/[0.02] border border-white/10 space-y-2">
-                <span className="text-[10px] text-[#9a9a9a] uppercase tracking-wider">PORTFOLIO PROJECTS</span>
-                <p className="text-2xl font-normal text-white">6</p>
-                <span className="text-[11px] text-[#8052ff]">All 6 interactive experiences online</span>
-              </div>
-
-              <div className="p-5 rounded-3xl bg-white/[0.02] border border-white/10 space-y-2">
-                <span className="text-[10px] text-[#9a9a9a] uppercase tracking-wider">SECURITY STATUS</span>
-                <p className="text-2xl font-normal text-[#15846e]">SECURE</p>
-                <span className="text-[11px] text-[#9a9a9a]">Owner authenticated via session token</span>
-              </div>
-
-              <div className="p-5 rounded-3xl bg-white/[0.02] border border-white/10 space-y-2">
-                <span className="text-[10px] text-[#9a9a9a] uppercase tracking-wider">CLOUDFLARE R2 STATUS</span>
-                <p className="text-2xl font-normal text-[#ffb829]">CONFIGURED</p>
-                <span className="text-[11px] text-[#9a9a9a]">Endpoint & token verified</span>
-              </div>
-            </div>
-
-            {/* Quick Messages Feed */}
-            <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#8052ff]" />
-                  <h3 className="text-base font-normal text-white">Recent Inbound Communications</h3>
-                </div>
-                <button
-                  onClick={loadMessages}
-                  className="flex items-center gap-1.5 text-xs text-[#9a9a9a] hover:text-white"
-                >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Refresh Feed</span>
-                </button>
-              </div>
-
-              {messages.length === 0 ? (
-                <div className="py-8 text-center text-xs text-[#9a9a9a] border border-dashed border-white/10 rounded-2xl">
-                  No messages submitted yet. Send a test message from the public Contact section!
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {messages.slice(0, 5).map((msg) => (
-                    <div
-                      key={msg.id}
-                      className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
-                    >
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-semibold text-white">{msg.name}</span>
-                          <span className="text-[11px] text-[#8052ff]">&lt;{msg.email}&gt;</span>
-                        </div>
-                        <p className="text-xs text-[#bdbdbd] font-extralight line-clamp-1">{msg.message}</p>
-                      </div>
-                      <span className="text-[10px] text-[#9a9a9a] shrink-0">
-                        {new Date(msg.timestamp).toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          <AdminDashboard onNavigateTab={(tab) => setActiveTab(tab)} />
         )}
 
         {/* TAB 2: INBOUND MESSAGES INBOX */}

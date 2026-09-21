@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePerspective } from '../../context/PerspectiveContext';
 import { Palette, Terminal } from 'lucide-react';
+import { trackEvent } from '../../lib/telemetry';
 
 export const PerspectiveToggle: React.FC = () => {
   const { perspective, togglePerspective, isDesigner } = usePerspective();
@@ -25,7 +26,12 @@ export const PerspectiveToggle: React.FC = () => {
         role="radio"
         aria-checked={isDesigner}
         aria-label="Designer perspective"
-        onClick={() => perspective !== 'designer' && togglePerspective()}
+        onClick={() => {
+          if (perspective !== 'designer') {
+            togglePerspective();
+            trackEvent('designer_engineer_switch', { perspective: 'designer' });
+          }
+        }}
         className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:outline-none ${
           isDesigner ? 'text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
         }`}
@@ -39,7 +45,12 @@ export const PerspectiveToggle: React.FC = () => {
         role="radio"
         aria-checked={!isDesigner}
         aria-label="Engineer perspective"
-        onClick={() => perspective !== 'engineer' && togglePerspective()}
+        onClick={() => {
+          if (perspective !== 'engineer') {
+            togglePerspective();
+            trackEvent('designer_engineer_switch', { perspective: 'engineer' });
+          }
+        }}
         className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none ${
           !isDesigner ? 'text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
         }`}

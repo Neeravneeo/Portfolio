@@ -12,6 +12,7 @@ import {
   Clock,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { trackEvent } from '../../lib/telemetry';
 
 interface ContactSectionProps {
   onOpenResume?: () => void;
@@ -94,6 +95,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenResume }) 
           const currentList: StoredMessage[] = existing ? JSON.parse(existing) : [];
           currentList.unshift(newMessage);
           localStorage.setItem('portfolio_messages_v1', JSON.stringify(currentList));
+          trackEvent('contact_submit', { subject: senderMessage.slice(0, 40), email: senderEmail });
         } catch (err) {
           console.error('Failed to store message in local state', err);
         }

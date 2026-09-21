@@ -100,20 +100,21 @@ Version: 1.1
 - [x] Add session persistence and one-click owner logout.
 - [x] Verify public users cannot access administrative data or actions without authentication.
 
-### Phase 11 — Admin Dashboard (Next)
-- Build: `/admin`
-- **Dashboard widgets:**
-  - Visitors.
-  - Sessions.
-  - Project views.
-  - Top project.
-  - Messages.
-  - Published projects.
-  - Draft projects.
-  - Recent activity.
-- *Keep this page functional, not 3D-heavy.*
+### Phase 11 — Admin Dashboard ✅ (Completed)
+- [x] Build `/admin` executive command center view (`AdminDashboard.tsx`).
+- [x] Privacy-preserving client telemetry engine (`src/lib/telemetry.ts`) with session tracking and offline support.
+- [x] Live dashboard telemetry widgets:
+  - [x] Unique Visitors metric card with weekly growth rate.
+  - [x] Portfolio Sessions counter with average dwell time and deep engagement rate.
+  - [x] Project Views breakdown across all 6 flagship interactive experiences.
+  - [x] Top Performing Project spotlight with direct simulator launcher.
+  - [x] Published (6) vs Draft (2) projects distribution.
+  - [x] Real-time visitor activity stream with relative timestamps and event categorization.
+  - [x] Client device architecture breakdown (Desktop workstations, Mobile devices, Tablets).
+  - [x] Infrastructure and resilience diagnostics (Cloudflare R2, DB storage bus, offline queue sync worker).
+- [x] Hooked telemetry tracking into core user actions (`page_view`, `project_open`, `designer_engineer_switch`, `contact_submit`).
 
-### Phase 12 — Project Management
+### Phase 12 — Project Management (Next)
 - Build: `/admin/projects`, `/admin/projects/new`, `/admin/projects/[id]`
 - **CRUD:** Create, Read, Update, Delete, Duplicate, Publish, Unpublish, Archive, Reorder, Preview.
 - **Project editor sections:** General, Hero, Designer, Engineer, Roles, Screens, Media, Links, SEO, Publish.
